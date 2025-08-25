@@ -1,0 +1,24 @@
+{
+  "name": "scev-self-charging-electric-vehicle",
+  "version": "1.0.0",
+  "description": "Business Strategic Plan for a Self Charging Electric Vehicle\r Menno Drescher posted on Jun 19, 2024\r Driving home fully charged. A Vision mission and purpose statement finding core values.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBA-Consult/scev-self-charging-electric-vehicle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CBA-Consult/scev-self-charging-electric-vehicle/issues"
+  },
+  "homepage": "https://github.com/CBA-Consult/scev-self-charging-electric-vehicle#readme",
+  "dependencies": {
+    "adpa-enterprise-framework-automation": "^3.2.0"
+  }
+}
