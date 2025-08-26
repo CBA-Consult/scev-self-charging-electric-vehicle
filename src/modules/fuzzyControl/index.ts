@@ -31,11 +31,45 @@ export {
   type SafetyLimits
 } from './FuzzyControlIntegration';
 
+// Hydraulic electromagnetic regenerative damper exports
+export {
+  HydraulicElectromagneticRegenerativeDamper,
+  type DamperInputs,
+  type DamperOutputs,
+  type DamperConfiguration,
+  type DamperConstraints
+} from './HydraulicElectromagneticRegenerativeDamper';
+
+// Hydraulic damper integration exports
+export {
+  HydraulicDamperIntegration,
+  type IntegratedSystemInputs,
+  type IntegratedSystemOutputs,
+  type HydraulicDamperSystemConfig
+} from './HydraulicDamperIntegration';
+
 /**
  * Factory function to create a complete fuzzy control system
  */
 export function createFuzzyControlSystem(vehicleParams: VehicleParameters, safetyLimits?: Partial<SafetyLimits>) {
   return new FuzzyControlIntegration(vehicleParams, safetyLimits);
+}
+
+/**
+ * Factory function to create a hydraulic electromagnetic regenerative damper
+ */
+export function createHydraulicDamper(config?: Partial<DamperConfiguration>, constraints?: Partial<DamperConstraints>) {
+  return new HydraulicElectromagneticRegenerativeDamper(config, constraints);
+}
+
+/**
+ * Factory function to create an integrated hydraulic damper system
+ */
+export function createIntegratedDamperSystem(
+  vehicleParams: VehicleParameters, 
+  systemConfig?: Partial<HydraulicDamperSystemConfig>
+) {
+  return new HydraulicDamperIntegration(vehicleParams, systemConfig);
 }
 
 /**
@@ -60,6 +94,60 @@ export const defaultSafetyLimits: SafetyLimits = {
   maxMotorTemperature: 150,            // °C
   maxBatteryChargeCurrent: 200,        // A
   minMechanicalBrakingRatio: 0.2       // Minimum 20% mechanical braking in emergency
+};
+
+/**
+ * Default hydraulic damper configuration
+ */
+export const defaultDamperConfiguration: DamperConfiguration = {
+  maxDampingForce: 8000,               // N - typical for passenger vehicle
+  maxElectromagneticForce: 2000,       // N - electromagnetic contribution
+  coilResistance: 0.5,                 // Ω - low resistance for efficiency
+  magneticFluxDensity: 1.2,            // T - strong permanent magnets
+  coilLength: 0.15,                    // m - effective coil length
+  cylinderDiameter: 0.05,              // m - 50mm diameter
+  maxOperatingTemperature: 120,        // °C - thermal limit
+  conversionEfficiency: 0.85           // 85% electromagnetic conversion efficiency
+};
+
+/**
+ * Default hydraulic damper constraints
+ */
+export const defaultDamperConstraints: DamperConstraints = {
+  maxCompressionVelocity: 2.0,         // m/s - maximum compression speed
+  maxExtensionVelocity: 2.0,           // m/s - maximum extension speed
+  maxDisplacement: 0.15,               // m - maximum compression
+  minDisplacement: -0.15,              // m - maximum extension
+  maxPowerOutput: 1500,                // W - maximum power per damper
+  temperatureDeratingThreshold: 100    // °C - start reducing performance
+};
+
+/**
+ * Default integrated system configuration
+ */
+export const defaultIntegratedSystemConfig: HydraulicDamperSystemConfig = {
+  damperConfigs: {
+    front: defaultDamperConfiguration,
+    rear: {
+      ...defaultDamperConfiguration,
+      maxDampingForce: 7000,           // Slightly lower for rear
+      maxElectromagneticForce: 1800,
+      maxPowerOutput: 1200
+    }
+  },
+  damperConstraints: {
+    front: defaultDamperConstraints,
+    rear: {
+      ...defaultDamperConstraints,
+      maxPowerOutput: 1200
+    }
+  },
+  energyManagement: {
+    prioritizeBrakingOverDamping: true,
+    maxCombinedPower: 8000,            // W - total system power limit
+    batteryChargingThreshold: 0.95,    // Reduce charging when battery > 95%
+    thermalManagementEnabled: true
+  }
 };
 
 /**
