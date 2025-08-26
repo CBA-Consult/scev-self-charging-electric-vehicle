@@ -66,18 +66,21 @@ This document outlines the performance requirements for the self-charging electr
 
 **1. Performance Goals:**
 
-* **Power Output:**  The pendulum-based energy harvesting system should generate a minimum average power of [Specify power in Watts] under average driving conditions. Target power output: [Specify target power in Watts].
-* **Power Output Variability:** The standard deviation of the power output should be less than [Specify value in Watts] under varying driving conditions (speed, road surface).
+* **Regenerative Braking Power Output:**  The optimized in-wheel motor system should generate a minimum average power of 75kW per wheel under normal braking conditions. Target maximum power output: 150kW per wheel during emergency braking.
+* **Continuous Energy Harvesting:**  The frictionless electromagnetic induction system should generate 2-8kW per wheel during normal driving conditions (20-150 km/h).
+* **Power Output Variability:** The standard deviation of the regenerative braking power output should be less than 5kW under varying driving conditions (speed, road surface, temperature).
+* **Energy Recovery Efficiency:** Target minimum efficiency of 95% for regenerative braking energy conversion from kinetic to electrical energy.
 
 
 **2. Response Time Requirements:**
 
-* **Pendulum Response:** The pendulum should respond to changes in wheel rotation within [Specify time in milliseconds].
+* **Regenerative Braking Response:** The in-wheel motor regenerative braking system should respond to braking input within 10 milliseconds.
+* **Electromagnetic Induction Response:** The frictionless induction system should adapt to speed changes within 100 milliseconds for optimal power point tracking.
 
 
 **3. Throughput Expectations:**
 
-* **Energy Conversion:** The system should convert kinetic energy into electrical energy with a minimum efficiency of [Specify percentage].
+* **Energy Conversion:** The in-wheel motor system should convert kinetic energy into electrical energy with a minimum efficiency of 95% for regenerative braking and 92% for continuous electromagnetic induction harvesting.
 
 
 **4. Scalability Requirements:**
