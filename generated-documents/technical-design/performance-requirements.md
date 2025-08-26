@@ -62,10 +62,15 @@ This document outlines the performance requirements for the self-charging electr
 * **Data Caching:** Implement an effective caching strategy for frequently accessed data to minimize latency and improve response times.  Specify cache sizes and eviction policies.
 
 
-**II. Energy Harvesting System Performance Requirements:**
+**II. In Wheel Frictionless Maglev Energy Harvesting System Performance Requirements:**
 
 **1. Performance Goals:**
 
+* **Power Output:**  The maglev-based energy harvesting system should generate a minimum average power of 120 Watts under average driving conditions. Target power output: 150 Watts at optimal conditions.
+* **Power Output Variability:** The standard deviation of the power output should be less than 10 Watts under varying driving conditions (speed, road surface).
+* **Friction Reduction:** Achieve 95% reduction in mechanical friction compared to traditional bearing-based systems.
+* **Drag Coefficient:** Reduce aerodynamic and mechanical drag by 15% compared to conventional wheel systems.
+* **Levitation Stability:** Maintain stable magnetic levitation with gap variation less than ±0.5mm under normal operating conditions.
 * **Regenerative Braking Power Output:**  The optimized in-wheel motor system should generate a minimum average power of 75kW per wheel under normal braking conditions. Target maximum power output: 150kW per wheel during emergency braking.
 * **Continuous Energy Harvesting:**  The frictionless electromagnetic induction system should generate 2-8kW per wheel during normal driving conditions (20-150 km/h).
 * **Power Output Variability:** The standard deviation of the regenerative braking power output should be less than 5kW under varying driving conditions (speed, road surface, temperature).
@@ -74,18 +79,23 @@ This document outlines the performance requirements for the self-charging electr
 
 **2. Response Time Requirements:**
 
+* **Maglev System Response:** The magnetic levitation control system should respond to disturbances and maintain stable levitation within 5 milliseconds.
+* **Magnetic Field Adjustment:** The system should adjust magnetic field strength in response to load changes within 10 milliseconds.
 * **Regenerative Braking Response:** The in-wheel motor regenerative braking system should respond to braking input within 10 milliseconds.
 * **Electromagnetic Induction Response:** The frictionless induction system should adapt to speed changes within 100 milliseconds for optimal power point tracking.
 
 
 **3. Throughput Expectations:**
 
+* **Energy Conversion:** The maglev system should convert kinetic energy into electrical energy with a minimum efficiency of 95% due to frictionless operation.
+* **Magnetic Field Efficiency:** The magnetic levitation system should operate with 98% efficiency in maintaining stable levitation.
 * **Energy Conversion:** The in-wheel motor system should convert kinetic energy into electrical energy with a minimum efficiency of 95% for regenerative braking and 92% for continuous electromagnetic induction harvesting.
 
 
 **4. Scalability Requirements:**
 
-* **Component Scalability:**  The design should allow for easy scaling of components (pendulum mass, generator size) to accommodate different vehicle sizes and power requirements.
+* **Component Scalability:**  The design should allow for easy scaling of components (magnet strength, rotor size, coil configuration) to accommodate different vehicle sizes and power requirements.
+* **Magnetic System Modularity:** The maglev system should be modular to allow for different wheel sizes and vehicle applications.
 
 
 **5. Resource Utilization:**
@@ -95,7 +105,9 @@ This document outlines the performance requirements for the self-charging electr
 
 **6. Load Handling:**
 
-* **Vibration Resistance:** The system should withstand vibrations and impacts associated with driving conditions.
+* **Vibration Resistance:** The maglev system should withstand vibrations and impacts associated with driving conditions while maintaining stable levitation.
+* **Magnetic Field Stability:** The system should maintain stable magnetic fields under varying load conditions and external electromagnetic interference.
+* **Temperature Stability:** The magnetic levitation system should operate effectively in temperature ranges from -40°C to +85°C.
 
 
 **III.  Performance Metrics, Monitoring, and Testing:**

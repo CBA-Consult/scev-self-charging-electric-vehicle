@@ -52,6 +52,11 @@ export interface SystemInputs {
   ambientTemperature: number;      // °C
   roadSurface: 'dry' | 'wet' | 'snow' | 'ice';
   visibility: 'clear' | 'rain' | 'fog' | 'snow';
+  
+  // Additional inputs for continuous energy harvesting
+  motorLoad?: number;              // 0-1 - current motor load
+  propulsionPower?: number;        // W - current propulsion power
+  wheelTorque?: number;            // Nm - current wheel torque
 }
 
 export interface SystemOutputs {
@@ -70,6 +75,9 @@ export interface SystemOutputs {
   // Energy recovery
   regeneratedPower: number;        // W
   energyRecoveryEfficiency: number; // 0-1
+  continuousHarvestingPower?: number; // W - power from continuous harvesting
+  totalEnergyRecovered?: number;   // W - total energy recovered
+  propulsionEfficiencyImpact?: number; // 0-1 - impact on propulsion efficiency
   
   // Piezoelectric energy harvesting
   piezoelectricPower: number;      // W
@@ -84,6 +92,7 @@ export interface SystemOutputs {
     brakingEfficiency: number;     // 0-1
     thermalStatus: 'normal' | 'warm' | 'hot';
     piezoelectricMetrics?: PiezoelectricPerformanceMetrics;
+    harvestingEfficiency?: number; // 0-1 - continuous harvesting efficiency
   };
 }
 
@@ -332,10 +341,16 @@ export class FuzzyControlIntegration {
         inputs.yawRate
       );
     } else {
-      return this.torqueModel.calculateTorqueDistribution(
+      // Use enhanced torque distribution with continuous harvesting
+      const motorLoad = inputs.motorLoad || 0.5; // Default to 50% if not provided
+      const propulsionPower = inputs.propulsionPower || 0; // Default to 0 if not provided
+      
+      return this.torqueModel.calculateEnhancedTorqueDistribution(
         brakingDemand,
         regenerativeBrakingRatio,
-        inputs.batterySOC
+        inputs.batterySOC,
+        motorLoad,
+        propulsionPower
       );
     }
   }
@@ -481,6 +496,10 @@ export class FuzzyControlIntegration {
     // Calculate total energy harvested
     const piezoelectricPower = piezoelectricResults?.piezoelectricPower || 0;
     const totalEnergyHarvested = distribution.regeneratedPower + piezoelectricPower;
+    // Calculate harvesting efficiency
+    const harvestingEfficiency = distribution.continuousHarvestingPower && inputs.propulsionPower 
+      ? distribution.continuousHarvestingPower / inputs.propulsionPower 
+      : 0;
 
     return {
       motorTorques: {
@@ -497,6 +516,9 @@ export class FuzzyControlIntegration {
       piezoelectricPower,
       piezoelectricEfficiency: piezoelectricResults?.piezoelectricEfficiency || 0,
       totalEnergyHarvested,
+      continuousHarvestingPower: distribution.continuousHarvestingPower,
+      totalEnergyRecovered: distribution.totalEnergyRecovered,
+      propulsionEfficiencyImpact: distribution.propulsionEfficiencyImpact,
       systemStatus,
       activeWarnings,
       performanceMetrics: {
@@ -504,6 +526,7 @@ export class FuzzyControlIntegration {
         brakingEfficiency,
         thermalStatus,
         piezoelectricMetrics: piezoelectricResults?.harvestingMetrics
+        harvestingEfficiency
       }
     };
   }
