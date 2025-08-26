@@ -1,8 +1,9 @@
 /**
- * Fuzzy Control Module for Regenerative Braking
+ * Fuzzy Control Module for Regenerative Braking and Energy Harvesting
  * 
  * This module exports the main components of the fuzzy control strategy
- * for regenerative braking in electric vehicles with in-wheel motors.
+ * for regenerative braking in electric vehicles with in-wheel motors,
+ * and provides integration with piezoelectric energy harvesting systems.
  */
 
 // Main controller exports
@@ -30,6 +31,28 @@ export {
   type SystemOutputs,
   type SafetyLimits
 } from './FuzzyControlIntegration';
+
+// Piezoelectric energy harvesting exports
+export {
+  PiezoelectricEnergyHarvester,
+  PiezoelectricIntegration,
+  NumericalAnalysis,
+  type PiezoelectricMaterial,
+  type HarvesterConfiguration,
+  type EnvironmentalConditions,
+  type HarvesterPerformance,
+  type MultiSourceInputs,
+  type OptimizationParameters,
+  type IntegratedSystemInputs,
+  type IntegratedSystemOutputs,
+  type EnergyManagementStrategy,
+  createPiezoelectricSystem,
+  defaultPiezoelectricMaterials,
+  defaultHarvesterConfigurations,
+  defaultOptimizationParameters,
+  piezoelectricUtils,
+  validationUtils
+} from '../piezoelectricHarvesting';
 
 // Continuous energy harvesting exports
 export {
@@ -108,6 +131,15 @@ export function createFuzzyControlSystem(vehicleParams: VehicleParameters, safet
 }
 
 /**
+ * Factory function to create a complete integrated energy harvesting system
+ * with both regenerative braking and piezoelectric harvesting capabilities
+ */
+export function createIntegratedEnergySystem(
+  vehicleParams: VehicleParameters, 
+  safetyLimits?: Partial<SafetyLimits>,
+  optimizationParams?: OptimizationParameters
+) {
+  return new PiezoelectricIntegration(vehicleParams, safetyLimits, optimizationParams);
 
  * Factory function to create a hydraulic electromagnetic regenerative damper
  */
