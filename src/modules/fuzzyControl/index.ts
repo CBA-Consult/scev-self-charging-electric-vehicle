@@ -31,6 +31,21 @@ export {
   type SafetyLimits
 } from './FuzzyControlIntegration';
 
+// MR Fluid system exports
+export {
+  MRFluidFormulation,
+  type MRFluidComposition,
+  type EnergyRecoveryMetrics,
+  type OptimizationParameters
+} from './MRFluidFormulation';
+
+export {
+  MRFluidIntegration,
+  type MRFluidSystemInputs,
+  type MRFluidSystemOutputs,
+  type MRFluidSystemConfiguration
+} from './MRFluidIntegration';
+
 /**
  * Factory function to create a complete fuzzy control system
  */
