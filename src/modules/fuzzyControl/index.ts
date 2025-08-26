@@ -31,6 +31,21 @@ export {
   type SafetyLimits
 } from './FuzzyControlIntegration';
 
+// MR Fluid system exports
+export {
+  MRFluidFormulation,
+  type MRFluidComposition,
+  type EnergyRecoveryMetrics,
+  type OptimizationParameters
+} from './MRFluidFormulation';
+
+export {
+  MRFluidIntegration,
+  type MRFluidSystemInputs,
+  type MRFluidSystemOutputs,
+  type MRFluidSystemConfiguration
+} from './MRFluidIntegration';
+
 // Hydraulic electromagnetic regenerative damper exports
 export {
   HydraulicElectromagneticRegenerativeDamper,
@@ -75,7 +90,6 @@ export {
   type EnergyFlowResult,
   type SystemEfficiencyAnalysis
 } from './FourWheelEnergyAnalyzer';
-
 
 /**
  * Factory function to create a complete fuzzy control system
