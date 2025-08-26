@@ -51,6 +51,14 @@ export {
   type TrainSystemOutputs
 } from './EnhancedEnergySystem';
 
+// Four-wheel energy analyzer exports
+export {
+  FourWheelEnergyAnalyzer,
+  type OperatingCondition,
+  type EnergyFlowResult,
+  type SystemEfficiencyAnalysis
+} from './FourWheelEnergyAnalyzer';
+
 /**
  * Factory function to create a complete fuzzy control system
  */
