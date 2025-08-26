@@ -32,6 +32,53 @@ export {
   type SafetyLimits
 } from './FuzzyControlIntegration';
 
+
+// Piezoelectric Materials exportsauto
+export {
+  ClassicalPiezoelectricMaterial,
+  NonClassicalPiezoelectricMaterial,
+  PiezoelectricMaterialFactory,
+  type MaterialProperties,
+  type NonClassicalProperties
+} from './PiezoelectricMaterials';
+
+// Structural Modeling exports
+export {
+  PiezoelectricBeamModel,
+  PiezoelectricPlateModel,
+  MultiPhysicsStructuralModel,
+  type GeometryParameters,
+  type LoadConditions,
+  type StructuralResponse,
+  type ModalProperties
+} from './StructuralModeling';
+
+// Optimization Algorithms exports
+export {
+  GeneticAlgorithmOptimizer,
+  ParticleSwarmOptimizer,
+  GradientBasedOptimizer,
+  type OptimizationParameters,
+  type OptimizationObjectives,
+  type OptimizationResult
+} from './OptimizationAlgorithms';
+
+// Vibration Energy Harvesting exports
+export {
+  PiezoelectricEnergyHarvestingController,
+  type VibrationEnergySystem,
+  type PiezoelectricHarvester,
+  type VibrationSource
+} from './VibrationEnergyHarvesting';
+
+// Main Piezoelectric Energy Harvester exports
+export {
+  PiezoelectricEnergyHarvester,
+  type PiezoelectricSystemConfiguration,
+  type PiezoelectricSystemStatus,
+  type PiezoelectricPerformanceMetrics
+} from './PiezoelectricEnergyHarvester';
+
 // Piezoelectric energy harvesting exports
 export {
   PiezoelectricEnergyHarvester,
@@ -131,6 +178,75 @@ export function createFuzzyControlSystem(vehicleParams: VehicleParameters, safet
 }
 
 /**
+ * Factory function to create a complete piezoelectric energy harvesting system
+ */
+export function createPiezoelectricEnergyHarvester(config: PiezoelectricSystemConfiguration) {
+  return new PiezoelectricEnergyHarvester(config);
+}
+
+/**
+ * Default piezoelectric system configuration for testing and development
+ */
+export const defaultPiezoelectricConfiguration: PiezoelectricSystemConfiguration = {
+  materials: {
+    classical: ['PZT-5H'],
+    nonClassical: ['PMN-PT']
+  },
+  harvesters: {
+    beamHarvesters: [
+      {
+        id: 'suspension_harvester',
+        material: 'PZT-5H',
+        geometry: {
+          length: 0.05,
+          width: 0.02,
+          thickness: 0.001,
+          shape: 'rectangular',
+          aspectRatio: 2.5,
+          supportConditions: 'cantilever',
+          massLocation: 'tip',
+          tipMass: 0.01,
+          layers: [{
+            materialType: 'PZT-5H',
+            thickness: 0.001,
+            position: 'middle',
+            orientation: 0
+          }]
+        },
+        location: { x: 1.2, y: 0.8, z: 0.3 }
+      }
+    ],
+    plateHarvesters: []
+  },
+  optimization: {
+    enabled: true,
+    algorithms: ['genetic', 'pso'],
+    objectives: {
+      maximizePower: { weight: 0.5 },
+      maximizeEfficiency: { weight: 0.3 },
+      maximizeBandwidth: { weight: 0.2 },
+      minimizeWeight: { weight: 0.0 },
+      minimizeVolume: { weight: 0.0 },
+      minimizeStress: { weight: 0.0 },
+      maxStress: 100e6,
+      maxDisplacement: 0.001,
+      minNaturalFrequency: 1,
+      maxNaturalFrequency: 1000
+    },
+    updateInterval: 5000,
+    convergenceCriteria: {
+      maxIterations: 100,
+      tolerance: 1e-6,
+      improvementThreshold: 0.01
+    }
+  },
+  targets: {
+    minPowerOutput: 0.001,
+    minEfficiency: 0.1,
+    maxStress: 100e6,
+    operatingFrequencyRange: { min: 1, max: 100 }
+  }
+};
  * Factory function to create a complete integrated energy harvesting system
  * with both regenerative braking and piezoelectric harvesting capabilities
  */

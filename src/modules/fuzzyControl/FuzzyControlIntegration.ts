@@ -17,6 +17,11 @@ import {
   BrakingDemand, 
   TorqueDistribution 
 } from './RegenerativeBrakingTorqueModel';
+import { 
+  PiezoelectricEnergyHarvester,
+  PiezoelectricSystemConfiguration,
+  PiezoelectricPerformanceMetrics
+} from './PiezoelectricEnergyHarvester';
 
 export interface SystemInputs {
   // Vehicle state
@@ -74,6 +79,11 @@ export interface SystemOutputs {
   totalEnergyRecovered?: number;   // W - total energy recovered
   propulsionEfficiencyImpact?: number; // 0-1 - impact on propulsion efficiency
   
+  // Piezoelectric energy harvesting
+  piezoelectricPower: number;      // W
+  piezoelectricEfficiency: number; // 0-1
+  totalEnergyHarvested: number;    // W (regenerative + piezoelectric)
+  
   // System status
   systemStatus: 'normal' | 'degraded' | 'fault';
   activeWarnings: string[];
@@ -81,6 +91,7 @@ export interface SystemOutputs {
     totalBrakingForce: number;     // N
     brakingEfficiency: number;     // 0-1
     thermalStatus: 'normal' | 'warm' | 'hot';
+    piezoelectricMetrics?: PiezoelectricPerformanceMetrics;
     harvestingEfficiency?: number; // 0-1 - continuous harvesting efficiency
   };
 }
@@ -101,14 +112,25 @@ export interface SafetyLimits {
 export class FuzzyControlIntegration {
   private fuzzyController: FuzzyRegenerativeBrakingController;
   private torqueModel: RegenerativeBrakingTorqueModel;
+  private piezoelectricHarvester?: PiezoelectricEnergyHarvester;
   private safetyLimits: SafetyLimits;
   private lastUpdateTime: number;
   private systemFaults: Set<string>;
-  private performanceHistory: Array<{ timestamp: number; efficiency: number }>;
+  private performanceHistory: Array<{ timestamp: number; efficiency: number; piezoelectricPower: number }>;
 
-  constructor(vehicleParams: VehicleParameters, safetyLimits?: Partial<SafetyLimits>) {
+  constructor(
+    vehicleParams: VehicleParameters, 
+    safetyLimits?: Partial<SafetyLimits>,
+    piezoelectricConfig?: PiezoelectricSystemConfiguration
+  ) {
     this.fuzzyController = new FuzzyRegenerativeBrakingController();
     this.torqueModel = new RegenerativeBrakingTorqueModel(vehicleParams);
+    
+    // Initialize piezoelectric energy harvester if configuration provided
+    if (piezoelectricConfig) {
+      this.piezoelectricHarvester = new PiezoelectricEnergyHarvester(piezoelectricConfig);
+    }
+    
     this.safetyLimits = {
       maxRegenerativeBrakingRatio: 0.8,
       maxMotorTorque: 800,
@@ -173,11 +195,27 @@ export class FuzzyControlIntegration {
       // Apply safety constraints
       const safeOutputs = this.applySafetyConstraints(torqueDistribution, inputs);
 
+      // Calculate piezoelectric energy harvesting
+      let piezoelectricResults = { 
+        piezoelectricPower: 0, 
+        piezoelectricEfficiency: 0, 
+        harvestingMetrics: undefined as PiezoelectricPerformanceMetrics | undefined 
+      };
+      
+      if (this.piezoelectricHarvester) {
+        const piezoResults = this.piezoelectricHarvester.update(inputs);
+        piezoelectricResults = {
+          piezoelectricPower: piezoResults.piezoelectricPower,
+          piezoelectricEfficiency: piezoResults.piezoelectricEfficiency,
+          harvestingMetrics: piezoResults.harvestingMetrics
+        };
+      }
+
       // Update performance metrics
-      this.updatePerformanceMetrics(safeOutputs, inputs);
+      this.updatePerformanceMetrics(safeOutputs, inputs, piezoelectricResults.piezoelectricPower);
 
       // Generate system outputs
-      return this.generateSystemOutputs(safeOutputs, inputs);
+      return this.generateSystemOutputs(safeOutputs, inputs, piezoelectricResults);
 
     } catch (error) {
       console.error('Control cycle error:', error);
@@ -381,14 +419,16 @@ export class FuzzyControlIntegration {
    */
   private updatePerformanceMetrics(
     distribution: TorqueDistribution,
-    inputs: SystemInputs
+    inputs: SystemInputs,
+    piezoelectricPower: number = 0
   ): void {
     const currentTime = Date.now();
     
     // Add current efficiency to history
     this.performanceHistory.push({
       timestamp: currentTime,
-      efficiency: distribution.energyRecoveryEfficiency
+      efficiency: distribution.energyRecoveryEfficiency,
+      piezoelectricPower
     });
 
     // Keep only last 100 entries
@@ -402,7 +442,12 @@ export class FuzzyControlIntegration {
    */
   private generateSystemOutputs(
     distribution: TorqueDistribution,
-    inputs: SystemInputs
+    inputs: SystemInputs,
+    piezoelectricResults?: { 
+      piezoelectricPower: number; 
+      piezoelectricEfficiency: number; 
+      harvestingMetrics?: PiezoelectricPerformanceMetrics 
+    }
   ): SystemOutputs {
     // Determine system status
     let systemStatus: 'normal' | 'degraded' | 'fault' = 'normal';
@@ -448,6 +493,9 @@ export class FuzzyControlIntegration {
       thermalStatus = 'hot';
     }
 
+    // Calculate total energy harvested
+    const piezoelectricPower = piezoelectricResults?.piezoelectricPower || 0;
+    const totalEnergyHarvested = distribution.regeneratedPower + piezoelectricPower;
     // Calculate harvesting efficiency
     const harvestingEfficiency = distribution.continuousHarvestingPower && inputs.propulsionPower 
       ? distribution.continuousHarvestingPower / inputs.propulsionPower 
@@ -465,6 +513,9 @@ export class FuzzyControlIntegration {
         (distribution.regeneratedPower / (distribution.regeneratedPower + distribution.mechanicalBrakingForce * inputs.vehicleSpeed / 3.6)) : 0,
       regeneratedPower: distribution.regeneratedPower,
       energyRecoveryEfficiency: distribution.energyRecoveryEfficiency,
+      piezoelectricPower,
+      piezoelectricEfficiency: piezoelectricResults?.piezoelectricEfficiency || 0,
+      totalEnergyHarvested,
       continuousHarvestingPower: distribution.continuousHarvestingPower,
       totalEnergyRecovered: distribution.totalEnergyRecovered,
       propulsionEfficiencyImpact: distribution.propulsionEfficiencyImpact,
@@ -474,6 +525,7 @@ export class FuzzyControlIntegration {
         totalBrakingForce,
         brakingEfficiency,
         thermalStatus,
+        piezoelectricMetrics: piezoelectricResults?.harvestingMetrics
         harvestingEfficiency
       }
     };
@@ -494,6 +546,9 @@ export class FuzzyControlIntegration {
       regenerativeBrakingRatio: 0,
       regeneratedPower: 0,
       energyRecoveryEfficiency: 0,
+      piezoelectricPower: 0,
+      piezoelectricEfficiency: 0,
+      totalEnergyHarvested: 0,
       systemStatus: 'fault',
       activeWarnings: ['System fault - failsafe mode active'],
       performanceMetrics: {
@@ -510,19 +565,26 @@ export class FuzzyControlIntegration {
   public getSystemDiagnostics(): {
     fuzzyControllerStatus: any;
     torqueModelStatus: any;
+    piezoelectricStatus?: any;
     systemFaults: string[];
-    performanceHistory: Array<{ timestamp: number; efficiency: number }>;
+    performanceHistory: Array<{ timestamp: number; efficiency: number; piezoelectricPower: number }>;
     averageEfficiency: number;
+    averagePiezoelectricPower: number;
   } {
     const averageEfficiency = this.performanceHistory.length > 0 ?
       this.performanceHistory.reduce((sum, entry) => sum + entry.efficiency, 0) / this.performanceHistory.length : 0;
+    
+    const averagePiezoelectricPower = this.performanceHistory.length > 0 ?
+      this.performanceHistory.reduce((sum, entry) => sum + entry.piezoelectricPower, 0) / this.performanceHistory.length : 0;
 
     return {
       fuzzyControllerStatus: this.fuzzyController.getSystemStatus(),
       torqueModelStatus: this.torqueModel.getDiagnostics(),
+      piezoelectricStatus: this.piezoelectricHarvester?.getSystemStatus(),
       systemFaults: Array.from(this.systemFaults),
       performanceHistory: [...this.performanceHistory],
-      averageEfficiency
+      averageEfficiency,
+      averagePiezoelectricPower
     };
   }
 
