@@ -45,7 +45,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **User Interface Module:** Provides real-time feedback on energy generation, storage, and consumption.  Includes visualizations of energy flow and battery status.  Communicates with the PMU and BMS.
 
-* **Pendulum Energy Harvester Module (Research & Development):**  This module, currently under research, aims to supplement the solar energy harvesting via kinetic energy from wheel rotation using a pendulum mechanism. (Details in Section 6)
+* **In Wheel Frictionless Maglev Energy Harvester Module (Research & Development):**  This module, currently under research, aims to supplement the solar energy harvesting via kinetic energy from wheel rotation using magnetic levitation technology to eliminate friction and drag. (Details in Section 6)
 
 
 **4. Interface Specifications:**
@@ -70,7 +70,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **Battery State Data:**  State-of-charge (SOC), state-of-health (SOH), cell voltages, temperature.
 
-* **Energy Harvesting Data:**  Solar panel power output, regenerative braking power output (future), pendulum power output (future).
+* **Energy Harvesting Data:**  Solar panel power output, regenerative braking power output (future), maglev energy harvester power output (future).
 
 * **Power Consumption Data:**  Real-time power draw from various vehicle systems.
 
@@ -83,7 +83,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **Energy Management Subsystem:** The PMU distributes power based on prioritized needs of vehicle systems (e.g., critical functions first).  The BMS manages battery charging and discharging to maintain optimal performance and safety.
 
-* **Pendulum Energy Harvester Module (R&D):**  This module uses a pendulum suspended within the wheel to generate electricity via electromagnetic induction as the wheel rotates. The pendulum's weight and length are critical parameters, requiring optimization (detailed below).  A mathematical model is required to predict power output based on these parameters, wheel speed, and damping factors.  Optimization algorithms (e.g., genetic algorithms) will be used to determine the optimal pendulum weight and length.
+* **In Wheel Frictionless Maglev Energy Harvester Module (R&D):**  This module uses magnetic levitation technology to suspend rotating energy generation components within the wheel, eliminating mechanical friction and drag. The system employs superconducting magnets or permanent magnet arrays to create a frictionless rotating environment. Key parameters include magnetic field strength, levitation gap, rotor mass, and electromagnetic induction coil configuration. Advanced control algorithms maintain stable levitation while optimizing energy generation efficiency. The frictionless operation significantly reduces energy losses and improves overall system efficiency compared to traditional mechanical approaches.t and length.
 
 * **User Interface Subsystem:** The UI module receives data from the PMU and BMS to display real-time energy status and system alerts.
 
@@ -110,7 +110,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **User Interface Response Time:**  Maximum response time of T milliseconds for UI updates. (Value to be determined based on UI technology selection)
 
-* **Pendulum Energy Harvester (R&D):**  Target minimum power output of P Watts at a wheel speed of Q RPM.  (Values to be determined based on optimization studies)
+* **In Wheel Frictionless Maglev Energy Harvester (R&D):**  Target minimum power output of 150 Watts at a wheel speed of 1000 RPM with 95% efficiency due to frictionless operation.  Target magnetic levitation gap of 2-5mm with stable operation under various road conditions.
 
 
 **9. System Constraints:**
@@ -134,7 +134,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **Software and Firmware:**  Development and testing of robust and reliable embedded software.
 
-* **External Research:**  Successful completion of research and development for the pendulum energy harvester module.
+* **External Research:**  Successful completion of research and development for the in wheel frictionless maglev energy harvester module, including magnetic levitation control systems and superconducting magnet technology.
 
 
 This document provides a high-level overview of the SCEV system design.  Further detailed specifications will be developed for each module and subsystem.  Regular updates to this document will be provided as the project progresses.
