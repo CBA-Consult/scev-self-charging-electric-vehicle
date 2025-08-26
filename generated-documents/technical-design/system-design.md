@@ -35,7 +35,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **Solar Panel Array Module:**  Collects solar energy and converts it to DC electricity.  Includes array optimization algorithms for maximizing power output in varying sunlight conditions.
 
-* **Regenerative Braking Module (Future):**  Captures kinetic energy during braking and converts it to electricity. (Not implemented in initial version)
+* **Optimized In-Wheel Motor Module:**  Advanced permanent magnet synchronous motors with dual-rotor configuration for enhanced regenerative braking. Captures kinetic energy during braking and converts it to electricity with 95%+ efficiency. Features frictionless electromagnetic induction for continuous energy harvesting during normal driving operations.
 
 * **Power Management Unit (PMU):**  Manages the power flow between the energy harvesting modules, the battery, and the vehicle's electrical systems.  Includes MPPT (Maximum Power Point Tracking) algorithms.
 
@@ -52,7 +52,7 @@ The SCEV system architecture comprises three major subsystems:
 
 * **Solar Panel Array - PMU:**  DC power interface, voltage and current data transmission via CAN bus.
 
-* **Regenerative Braking Module - PMU (Future):** DC power interface, voltage and current data transmission via CAN bus.
+* **In-Wheel Motor Module - PMU:** High-voltage DC power interface (400-800V), real-time torque and power data transmission via CAN-FD bus, integrated safety and diagnostic communication protocols.
 
 * **PMU - BMS:**  Communication via CAN bus for power requests and battery status updates.
 
@@ -71,6 +71,7 @@ The SCEV system architecture comprises three major subsystems:
 * **Battery State Data:**  State-of-charge (SOC), state-of-health (SOH), cell voltages, temperature.
 
 * **Energy Harvesting Data:**  Solar panel power output, regenerative braking power output (future), maglev energy harvester power output (future).
+* **Energy Harvesting Data:**  Solar panel power output, in-wheel motor regenerative braking power output (up to 150kW per wheel), frictionless electromagnetic induction power output (2-8kW per wheel), pendulum power output (future research).
 
 * **Power Consumption Data:**  Real-time power draw from various vehicle systems.
 
@@ -111,6 +112,9 @@ The SCEV system architecture comprises three major subsystems:
 * **User Interface Response Time:**  Maximum response time of T milliseconds for UI updates. (Value to be determined based on UI technology selection)
 
 * **In Wheel Frictionless Maglev Energy Harvester (R&D):**  Target minimum power output of 150 Watts at a wheel speed of 1000 RPM with 95% efficiency due to frictionless operation.  Target magnetic levitation gap of 2-5mm with stable operation under various road conditions.
+* **In-Wheel Motor Regenerative Braking:**  Target minimum energy recovery efficiency of 95% with maximum power output of 150kW per wheel during braking. Continuous energy harvesting of 2-8kW per wheel during normal driving through frictionless electromagnetic induction.
+
+* **Pendulum Energy Harvester (R&D):**  Target minimum power output of P Watts at a wheel speed of Q RPM.  (Values to be determined based on optimization studies)
 
 
 **9. System Constraints:**

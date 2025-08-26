@@ -50,7 +50,7 @@ The following interfaces will be defined:
 
 The data flow will be as follows:
 
-1. **Energy Harvesting:** Solar panels and regenerative braking systems generate energy and send data (energy generated, current, voltage) to the Battery Management System (BMS) via the internal vehicle interface.
+1. **Energy Harvesting:** Solar panels and optimized in-wheel motor regenerative braking systems generate energy and send data (energy generated, current, voltage, torque, temperature) to the Battery Management System (BMS) via high-speed CAN-FD and internal vehicle interface. The in-wheel motors provide both regenerative braking (up to 150kW per wheel) and continuous electromagnetic induction harvesting (2-8kW per wheel).
 
 2. **Battery Management:** The BMS monitors battery charge level, temperature, and other parameters. It publishes events related to battery status to the message broker.
 
@@ -80,7 +80,8 @@ Key integration points include:
 
 * BMS to Message Broker
 * Solar Panel Interface to BMS
-* Regenerative Braking Interface to BMS
+* In-Wheel Motor Interface to BMS (High-voltage DC and CAN-FD)
+* Motor Control Units to Vehicle Dynamics Controller
 * Message Broker to Aggregator
 * Aggregator to Mediator
 * Mediator to Smart Home System (V2H)
