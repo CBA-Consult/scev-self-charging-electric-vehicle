@@ -40,11 +40,142 @@ export {
   type HarvestingStrategy
 } from './ContinuousEnergyHarvester';
 
+// MR Fluid system exports
+export {
+  MRFluidFormulation,
+  type MRFluidComposition,
+  type EnergyRecoveryMetrics,
+  type OptimizationParameters
+} from './MRFluidFormulation';
+
+export {
+  MRFluidIntegration,
+  type MRFluidSystemInputs,
+  type MRFluidSystemOutputs,
+  type MRFluidSystemConfiguration
+} from './MRFluidIntegration';
+
+// Hydraulic electromagnetic regenerative damper exports
+export {
+  HydraulicElectromagneticRegenerativeDamper,
+  type DamperInputs,
+  type DamperOutputs,
+  type DamperConfiguration,
+  type DamperConstraints
+} from './HydraulicElectromagneticRegenerativeDamper';
+
+// Hydraulic damper integration exports
+export {
+  HydraulicDamperIntegration,
+  type IntegratedSystemInputs,
+  type IntegratedSystemOutputs,
+  type HydraulicDamperSystemConfig
+} from './HydraulicDamperIntegration';
+
+// Continuous energy generation exports
+export {
+  ContinuousEnergyGenerator,
+  type GenerationParameters,
+  type ThermalConfig,
+  type WheelRotationData,
+  type ElectromagneticConfig,
+  type PowerOutput,
+  type SystemStatus
+} from './ContinuousEnergyGenerator';
+
+// Enhanced energy system exports
+export {
+  EnhancedEnergySystem,
+  type EnhancedSystemInputs,
+  type EnhancedSystemOutputs,
+  type TrainSpecificInputs,
+  type TrainSystemOutputs
+} from './EnhancedEnergySystem';
+
+// Four-wheel energy analyzer exports
+export {
+  FourWheelEnergyAnalyzer,
+  type OperatingCondition,
+  type EnergyFlowResult,
+  type SystemEfficiencyAnalysis
+} from './FourWheelEnergyAnalyzer';
+
 /**
  * Factory function to create a complete fuzzy control system
  */
 export function createFuzzyControlSystem(vehicleParams: VehicleParameters, safetyLimits?: Partial<SafetyLimits>) {
   return new FuzzyControlIntegration(vehicleParams, safetyLimits);
+}
+
+/**
+
+ * Factory function to create a hydraulic electromagnetic regenerative damper
+ */
+export function createHydraulicDamper(config?: Partial<DamperConfiguration>, constraints?: Partial<DamperConstraints>) {
+  return new HydraulicElectromagneticRegenerativeDamper(config, constraints);
+}
+
+/**
+ * Factory function to create an integrated hydraulic damper system
+ */
+export function createIntegratedDamperSystem(
+  vehicleParams: VehicleParameters, 
+  systemConfig?: Partial<HydraulicDamperSystemConfig>
+) {
+  return new HydraulicDamperIntegration(vehicleParams, systemConfig);
+
+ * Factory function to create an enhanced energy system with continuous generation
+ */
+export function createEnhancedEnergySystem(
+  vehicleParams: VehicleParameters,
+  electromagneticConfigs: Map<string, ElectromagneticConfig>
+) {
+  return new EnhancedEnergySystem(vehicleParams, electromagneticConfigs);
+}
+
+/**
+ * Factory function to create default electromagnetic configurations for vehicles
+ */
+export function createDefaultElectromagneticConfigs(motorCount: number = 4): Map<string, ElectromagneticConfig> {
+  const defaultConfig: ElectromagneticConfig = {
+    permanentMagnetStrength: 1.2,
+    coilTurns: 120,
+    coilResistance: 0.05,
+    airGapDistance: 0.003,
+    magneticPermeability: 1.256e-6
+  };
+
+  const configs = new Map<string, ElectromagneticConfig>();
+  configs.set('frontLeft', { ...defaultConfig });
+  configs.set('frontRight', { ...defaultConfig });
+  
+  if (motorCount >= 4) {
+    configs.set('rearLeft', { ...defaultConfig, permanentMagnetStrength: 1.0, coilTurns: 100 });
+    configs.set('rearRight', { ...defaultConfig, permanentMagnetStrength: 1.0, coilTurns: 100 });
+  }
+  
+  return configs;
+}
+
+/**
+ * Factory function to create train-optimized electromagnetic configurations
+ */
+export function createTrainElectromagneticConfigs(): Map<string, ElectromagneticConfig> {
+  const trainConfig: ElectromagneticConfig = {
+    permanentMagnetStrength: 1.6,
+    coilTurns: 200,
+    coilResistance: 0.03,
+    airGapDistance: 0.004,
+    magneticPermeability: 1.256e-6
+  };
+
+  const configs = new Map<string, ElectromagneticConfig>();
+  configs.set('frontLeft', { ...trainConfig });
+  configs.set('frontRight', { ...trainConfig });
+  configs.set('rearLeft', { ...trainConfig });
+  configs.set('rearRight', { ...trainConfig });
+  
+  return configs;
 }
 
 /**
@@ -69,6 +200,60 @@ export const defaultSafetyLimits: SafetyLimits = {
   maxMotorTemperature: 150,            // °C
   maxBatteryChargeCurrent: 200,        // A
   minMechanicalBrakingRatio: 0.2       // Minimum 20% mechanical braking in emergency
+};
+
+/**
+ * Default hydraulic damper configuration
+ */
+export const defaultDamperConfiguration: DamperConfiguration = {
+  maxDampingForce: 8000,               // N - typical for passenger vehicle
+  maxElectromagneticForce: 2000,       // N - electromagnetic contribution
+  coilResistance: 0.5,                 // Ω - low resistance for efficiency
+  magneticFluxDensity: 1.2,            // T - strong permanent magnets
+  coilLength: 0.15,                    // m - effective coil length
+  cylinderDiameter: 0.05,              // m - 50mm diameter
+  maxOperatingTemperature: 120,        // °C - thermal limit
+  conversionEfficiency: 0.85           // 85% electromagnetic conversion efficiency
+};
+
+/**
+ * Default hydraulic damper constraints
+ */
+export const defaultDamperConstraints: DamperConstraints = {
+  maxCompressionVelocity: 2.0,         // m/s - maximum compression speed
+  maxExtensionVelocity: 2.0,           // m/s - maximum extension speed
+  maxDisplacement: 0.15,               // m - maximum compression
+  minDisplacement: -0.15,              // m - maximum extension
+  maxPowerOutput: 1500,                // W - maximum power per damper
+  temperatureDeratingThreshold: 100    // °C - start reducing performance
+};
+
+/**
+ * Default integrated system configuration
+ */
+export const defaultIntegratedSystemConfig: HydraulicDamperSystemConfig = {
+  damperConfigs: {
+    front: defaultDamperConfiguration,
+    rear: {
+      ...defaultDamperConfiguration,
+      maxDampingForce: 7000,           // Slightly lower for rear
+      maxElectromagneticForce: 1800,
+      maxPowerOutput: 1200
+    }
+  },
+  damperConstraints: {
+    front: defaultDamperConstraints,
+    rear: {
+      ...defaultDamperConstraints,
+      maxPowerOutput: 1200
+    }
+  },
+  energyManagement: {
+    prioritizeBrakingOverDamping: true,
+    maxCombinedPower: 8000,            // W - total system power limit
+    batteryChargingThreshold: 0.95,    // Reduce charging when battery > 95%
+    thermalManagementEnabled: true
+  }
 };
 
 /**
