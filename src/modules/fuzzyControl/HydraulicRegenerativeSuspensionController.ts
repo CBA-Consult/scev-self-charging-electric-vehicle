@@ -1,9 +1,18 @@
 /**
- * Hydraulic Regenerative Suspension (HRS) Controller
+ * Advanced Hydraulic Regenerative Suspension (HRS) Controller
  * 
  * This module implements advanced control algorithms for managing the operation
  * of the Hydraulic Regenerative Suspension system. The algorithms dynamically
- * adjust damping and energy recovery based on road conditions and driving patterns.
+ * adjust damping and energy recovery based on road conditions and driving patterns
+ * to optimize vehicle performance and energy efficiency.
+ * 
+ * Features:
+ * - Advanced fuzzy logic control with comprehensive rule sets
+ * - Adaptive control algorithms that learn from driving patterns
+ * - Predictive control for anticipating road conditions
+ * - Multi-objective optimization for energy recovery
+ * - Real-time parameter tuning based on performance feedback
+ * - Integration with road condition and driving pattern analyzers
  */
 
 export interface SuspensionInputs {
@@ -73,22 +82,88 @@ export interface HRSFuzzyRule {
     fuzzySet: string;
   };
   weight: number;                   // Rule weight (0-1)
+  priority: number;                 // Rule priority (1-10)
+  adaptiveWeight?: number;          // Adaptive weight based on performance
+}
+
+export interface AdaptiveParameters {
+  learningRate: number;             // Learning rate for adaptive algorithms
+  forgettingFactor: number;         // Forgetting factor for historical data
+  adaptationThreshold: number;      // Threshold for triggering adaptation
+  performanceWindow: number;        // Window size for performance evaluation
+}
+
+export interface PredictiveParameters {
+  predictionHorizon: number;        // Prediction horizon in seconds
+  confidenceThreshold: number;     // Confidence threshold for predictions
+  updateFrequency: number;         // Frequency of prediction updates (Hz)
+}
+
+export interface OptimizationObjectives {
+  comfortWeight: number;           // Weight for comfort optimization
+  energyWeight: number;            // Weight for energy recovery optimization
+  stabilityWeight: number;         // Weight for vehicle stability
+  efficiencyWeight: number;        // Weight for system efficiency
 }
 
 /**
- * Main controller for Hydraulic Regenerative Suspension system
+ * Advanced controller for Hydraulic Regenerative Suspension system
  */
 export class HydraulicRegenerativeSuspensionController {
   private fuzzySets: Map<string, Map<string, HRSFuzzySet>>;
   private fuzzyRules: HRSFuzzyRule[];
   private lastInputs: SuspensionInputs | null = null;
-  private performanceHistory: Array<{ timestamp: number; efficiency: number; comfort: number }> = [];
+  private performanceHistory: Array<{ timestamp: number; efficiency: number; comfort: number; stability: number }> = [];
+  
+  // Advanced control parameters
+  private adaptiveParams: AdaptiveParameters;
+  private predictiveParams: PredictiveParameters;
+  private optimizationObjectives: OptimizationObjectives;
+  
+  // Learning and adaptation
+  private rulePerformanceHistory: Map<string, number[]> = new Map();
+  private adaptiveWeights: Map<string, number> = new Map();
+  private predictionBuffer: Array<{ timestamp: number; prediction: SuspensionOutputs; actual?: SuspensionOutputs }> = [];
+  
+  // Road condition and driving pattern integration
+  private roadConditionHistory: Array<{ timestamp: number; roughness: number; gradient: number; surface: string }> = [];
+  private drivingPatternHistory: Array<{ timestamp: number; aggression: number; smoothness: number; efficiency: number }> = [];
 
-  constructor() {
+  constructor(
+    adaptiveParams?: Partial<AdaptiveParameters>,
+    predictiveParams?: Partial<PredictiveParameters>,
+    optimizationObjectives?: Partial<OptimizationObjectives>
+  ) {
     this.fuzzySets = new Map();
     this.fuzzyRules = [];
+    
+    // Initialize advanced control parameters
+    this.adaptiveParams = {
+      learningRate: 0.1,
+      forgettingFactor: 0.95,
+      adaptationThreshold: 0.05,
+      performanceWindow: 50,
+      ...adaptiveParams
+    };
+    
+    this.predictiveParams = {
+      predictionHorizon: 2.0,
+      confidenceThreshold: 0.8,
+      updateFrequency: 10,
+      ...predictiveParams
+    };
+    
+    this.optimizationObjectives = {
+      comfortWeight: 0.3,
+      energyWeight: 0.3,
+      stabilityWeight: 0.25,
+      efficiencyWeight: 0.15,
+      ...optimizationObjectives
+    };
+    
     this.initializeFuzzySets();
     this.initializeFuzzyRules();
+    this.initializeAdaptiveWeights();
   }
 
   /**
@@ -153,11 +228,11 @@ export class HydraulicRegenerativeSuspensionController {
   }
 
   /**
-   * Initialize fuzzy rules for HRS control
+   * Initialize comprehensive fuzzy rules for advanced HRS control
    */
   private initializeFuzzyRules(): void {
     this.fuzzyRules = [
-      // Comfort-oriented rules
+      // Enhanced comfort-oriented rules
       {
         id: 'comfort_1',
         conditions: [
@@ -165,7 +240,8 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'vehicleSpeed', fuzzySet: 'low' }
         ],
         conclusion: { variable: 'dampingCoefficient', fuzzySet: 'soft' },
-        weight: 0.9
+        weight: 0.9,
+        priority: 8
       },
       {
         id: 'comfort_2',
@@ -174,10 +250,21 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'accelerationPattern', fuzzySet: 'gentle' }
         ],
         conclusion: { variable: 'dampingCoefficient', fuzzySet: 'soft' },
-        weight: 0.8
+        weight: 0.8,
+        priority: 7
+      },
+      {
+        id: 'comfort_3',
+        conditions: [
+          { variable: 'roadRoughness', fuzzySet: 'rough' },
+          { variable: 'accelerationPattern', fuzzySet: 'gentle' }
+        ],
+        conclusion: { variable: 'dampingCoefficient', fuzzySet: 'medium' },
+        weight: 0.85,
+        priority: 8
       },
 
-      // Energy recovery rules
+      // Enhanced energy recovery rules
       {
         id: 'energy_1',
         conditions: [
@@ -185,7 +272,8 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'energyStorageLevel', fuzzySet: 'low' }
         ],
         conclusion: { variable: 'energyRecoveryRate', fuzzySet: 'high' },
-        weight: 0.9
+        weight: 0.9,
+        priority: 9
       },
       {
         id: 'energy_2',
@@ -194,10 +282,31 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'energyStorageLevel', fuzzySet: 'medium' }
         ],
         conclusion: { variable: 'energyRecoveryRate', fuzzySet: 'medium' },
-        weight: 0.8
+        weight: 0.8,
+        priority: 7
+      },
+      {
+        id: 'energy_3',
+        conditions: [
+          { variable: 'suspensionVelocity', fuzzySet: 'medium' },
+          { variable: 'energyStorageLevel', fuzzySet: 'low' },
+          { variable: 'roadRoughness', fuzzySet: 'moderate' }
+        ],
+        conclusion: { variable: 'energyRecoveryRate', fuzzySet: 'high' },
+        weight: 0.85,
+        priority: 8
+      },
+      {
+        id: 'energy_4',
+        conditions: [
+          { variable: 'energyStorageLevel', fuzzySet: 'high' }
+        ],
+        conclusion: { variable: 'energyRecoveryRate', fuzzySet: 'low' },
+        weight: 0.7,
+        priority: 6
       },
 
-      // Performance rules
+      // Enhanced performance rules
       {
         id: 'performance_1',
         conditions: [
@@ -205,7 +314,8 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'vehicleSpeed', fuzzySet: 'high' }
         ],
         conclusion: { variable: 'dampingCoefficient', fuzzySet: 'firm' },
-        weight: 0.9
+        weight: 0.9,
+        priority: 9
       },
       {
         id: 'performance_2',
@@ -214,10 +324,21 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'vehicleSpeed', fuzzySet: 'medium' }
         ],
         conclusion: { variable: 'dampingCoefficient', fuzzySet: 'medium' },
-        weight: 0.7
+        weight: 0.7,
+        priority: 6
+      },
+      {
+        id: 'performance_3',
+        conditions: [
+          { variable: 'accelerationPattern', fuzzySet: 'aggressive' },
+          { variable: 'roadRoughness', fuzzySet: 'smooth' }
+        ],
+        conclusion: { variable: 'dampingCoefficient', fuzzySet: 'firm' },
+        weight: 0.8,
+        priority: 7
       },
 
-      // Valve control rules
+      // Enhanced valve control rules
       {
         id: 'valve_1',
         conditions: [
@@ -225,7 +346,8 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'energyStorageLevel', fuzzySet: 'low' }
         ],
         conclusion: { variable: 'valvePosition', fuzzySet: 'open' },
-        weight: 0.8
+        weight: 0.8,
+        priority: 8
       },
       {
         id: 'valve_2',
@@ -234,7 +356,62 @@ export class HydraulicRegenerativeSuspensionController {
           { variable: 'energyStorageLevel', fuzzySet: 'high' }
         ],
         conclusion: { variable: 'valvePosition', fuzzySet: 'closed' },
-        weight: 0.7
+        weight: 0.7,
+        priority: 6
+      },
+      {
+        id: 'valve_3',
+        conditions: [
+          { variable: 'roadRoughness', fuzzySet: 'rough' },
+          { variable: 'energyStorageLevel', fuzzySet: 'medium' }
+        ],
+        conclusion: { variable: 'valvePosition', fuzzySet: 'partial' },
+        weight: 0.75,
+        priority: 7
+      },
+
+      // Adaptive rules for different driving modes
+      {
+        id: 'eco_mode_1',
+        conditions: [
+          { variable: 'accelerationPattern', fuzzySet: 'gentle' },
+          { variable: 'vehicleSpeed', fuzzySet: 'low' }
+        ],
+        conclusion: { variable: 'energyRecoveryRate', fuzzySet: 'high' },
+        weight: 0.8,
+        priority: 7
+      },
+      {
+        id: 'sport_mode_1',
+        conditions: [
+          { variable: 'accelerationPattern', fuzzySet: 'aggressive' },
+          { variable: 'vehicleSpeed', fuzzySet: 'high' }
+        ],
+        conclusion: { variable: 'dampingCoefficient', fuzzySet: 'firm' },
+        weight: 0.9,
+        priority: 9
+      },
+
+      // Safety and stability rules
+      {
+        id: 'safety_1',
+        conditions: [
+          { variable: 'suspensionVelocity', fuzzySet: 'fast' },
+          { variable: 'roadRoughness', fuzzySet: 'rough' }
+        ],
+        conclusion: { variable: 'dampingCoefficient', fuzzySet: 'firm' },
+        weight: 0.95,
+        priority: 10
+      },
+      {
+        id: 'stability_1',
+        conditions: [
+          { variable: 'accelerationPattern', fuzzySet: 'aggressive' },
+          { variable: 'roadRoughness', fuzzySet: 'rough' }
+        ],
+        conclusion: { variable: 'dampingCoefficient', fuzzySet: 'firm' },
+        weight: 0.9,
+        priority: 9
       }
     ];
   }
@@ -630,5 +807,433 @@ export class HydraulicRegenerativeSuspensionController {
       performanceTrend: trend,
       ruleUtilization
     };
+  }
+
+  /**
+   * Initialize adaptive weights for fuzzy rules
+   */
+  private initializeAdaptiveWeights(): void {
+    this.fuzzyRules.forEach(rule => {
+      this.adaptiveWeights.set(rule.id, rule.weight);
+      this.rulePerformanceHistory.set(rule.id, []);
+    });
+  }
+
+  /**
+   * Advanced control algorithm that integrates fuzzy logic with adaptive and predictive control
+   */
+  public calculateAdvancedOptimalControl(
+    inputs: SuspensionInputs,
+    roadConditionData?: any,
+    drivingPatternData?: any
+  ): SuspensionOutputs {
+    this.validateInputs(inputs);
+
+    // Update historical data
+    this.updateRoadConditionHistory(inputs);
+    this.updateDrivingPatternHistory(inputs);
+
+    // Apply adaptive learning
+    this.updateAdaptiveWeights(inputs);
+
+    // Generate predictive control
+    const predictiveOutputs = this.calculatePredictiveControl(inputs);
+
+    // Calculate base fuzzy control
+    const fuzzyOutputs = this.calculateOptimalControl(inputs);
+
+    // Apply multi-objective optimization
+    const optimizedOutputs = this.applyMultiObjectiveOptimization(fuzzyOutputs, predictiveOutputs, inputs);
+
+    // Apply adaptive adjustments
+    const adaptiveOutputs = this.applyAdaptiveAdjustments(optimizedOutputs, inputs);
+
+    // Final safety constraints and validation
+    const finalOutputs = this.applySafetyConstraints(adaptiveOutputs, inputs);
+
+    // Update performance tracking
+    this.updateAdvancedPerformanceHistory(finalOutputs, inputs);
+
+    return finalOutputs;
+  }
+
+  /**
+   * Calculate predictive control based on anticipated road conditions and driving patterns
+   */
+  private calculatePredictiveControl(inputs: SuspensionInputs): SuspensionOutputs {
+    const prediction = this.predictFutureConditions(inputs);
+    
+    // Adjust control parameters based on predictions
+    let dampingAdjustment = 0;
+    let energyAdjustment = 0;
+
+    if (prediction.anticipatedRoughness > inputs.roadRoughness) {
+      dampingAdjustment = (prediction.anticipatedRoughness - inputs.roadRoughness) * 500;
+      energyAdjustment = (prediction.anticipatedRoughness - inputs.roadRoughness) * 200;
+    }
+
+    if (prediction.anticipatedAggression > inputs.accelerationPattern) {
+      dampingAdjustment += (prediction.anticipatedAggression - inputs.accelerationPattern) * 300;
+    }
+
+    return {
+      dampingCoefficient: Math.max(500, Math.min(5000, 2500 + dampingAdjustment)),
+      dampingMode: 'adaptive',
+      energyRecoveryRate: Math.max(0, Math.min(1500, 750 + energyAdjustment)),
+      hydraulicFlowRate: 15,
+      generatorTorque: 25,
+      accumulatorChargeRate: 2,
+      valvePosition: 0.5,
+      pumpSpeed: 1500,
+      comfortIndex: 0.8,
+      energyEfficiency: 0.7,
+      systemEfficiency: 0.75
+    };
+  }
+
+  /**
+   * Predict future road conditions and driving patterns
+   */
+  private predictFutureConditions(inputs: SuspensionInputs): {
+    anticipatedRoughness: number;
+    anticipatedAggression: number;
+    confidence: number;
+  } {
+    const recentHistory = this.roadConditionHistory.slice(-10);
+    const recentPatterns = this.drivingPatternHistory.slice(-10);
+
+    let anticipatedRoughness = inputs.roadRoughness;
+    let anticipatedAggression = inputs.accelerationPattern;
+    let confidence = 0.5;
+
+    if (recentHistory.length >= 3) {
+      const roughnessTrend = this.calculateTrend(recentHistory.map(h => h.roughness));
+      anticipatedRoughness = Math.max(0, Math.min(1, inputs.roadRoughness + roughnessTrend * this.predictiveParams.predictionHorizon));
+      confidence += 0.2;
+    }
+
+    if (recentPatterns.length >= 3) {
+      const aggressionTrend = this.calculateTrend(recentPatterns.map(p => p.aggression));
+      anticipatedAggression = Math.max(0, Math.min(1, inputs.accelerationPattern + aggressionTrend * this.predictiveParams.predictionHorizon));
+      confidence += 0.2;
+    }
+
+    return {
+      anticipatedRoughness,
+      anticipatedAggression,
+      confidence: Math.min(1, confidence)
+    };
+  }
+
+  /**
+   * Apply multi-objective optimization to balance comfort, energy recovery, and stability
+   */
+  private applyMultiObjectiveOptimization(
+    fuzzyOutputs: SuspensionOutputs,
+    predictiveOutputs: SuspensionOutputs,
+    inputs: SuspensionInputs
+  ): SuspensionOutputs {
+    const objectives = this.optimizationObjectives;
+
+    // Weighted combination of fuzzy and predictive outputs
+    const dampingCoefficient = 
+      fuzzyOutputs.dampingCoefficient * (1 - objectives.stabilityWeight) +
+      predictiveOutputs.dampingCoefficient * objectives.stabilityWeight;
+
+    const energyRecoveryRate = 
+      fuzzyOutputs.energyRecoveryRate * (1 - objectives.energyWeight) +
+      predictiveOutputs.energyRecoveryRate * objectives.energyWeight;
+
+    // Optimize for comfort vs energy trade-off
+    const comfortEnergyBalance = this.optimizeComfortEnergyTradeoff(inputs, dampingCoefficient, energyRecoveryRate);
+
+    return {
+      ...fuzzyOutputs,
+      dampingCoefficient: comfortEnergyBalance.optimalDamping,
+      energyRecoveryRate: comfortEnergyBalance.optimalEnergy,
+      dampingMode: this.determineDampingMode(comfortEnergyBalance.optimalDamping),
+      systemEfficiency: comfortEnergyBalance.efficiency
+    };
+  }
+
+  /**
+   * Optimize the trade-off between comfort and energy recovery
+   */
+  private optimizeComfortEnergyTradeoff(
+    inputs: SuspensionInputs,
+    baseDamping: number,
+    baseEnergy: number
+  ): { optimalDamping: number; optimalEnergy: number; efficiency: number } {
+    const comfortWeight = this.optimizationObjectives.comfortWeight;
+    const energyWeight = this.optimizationObjectives.energyWeight;
+
+    // Simple optimization using weighted objectives
+    let bestDamping = baseDamping;
+    let bestEnergy = baseEnergy;
+    let bestScore = 0;
+
+    // Test different combinations
+    for (let dampingFactor = 0.8; dampingFactor <= 1.2; dampingFactor += 0.1) {
+      for (let energyFactor = 0.8; energyFactor <= 1.2; energyFactor += 0.1) {
+        const testDamping = baseDamping * dampingFactor;
+        const testEnergy = baseEnergy * energyFactor;
+
+        const comfortScore = this.evaluateComfortScore(inputs, testDamping);
+        const energyScore = this.evaluateEnergyScore(inputs, testEnergy);
+        const stabilityScore = this.evaluateStabilityScore(inputs, testDamping);
+
+        const totalScore = 
+          comfortScore * comfortWeight +
+          energyScore * energyWeight +
+          stabilityScore * this.optimizationObjectives.stabilityWeight;
+
+        if (totalScore > bestScore) {
+          bestScore = totalScore;
+          bestDamping = testDamping;
+          bestEnergy = testEnergy;
+        }
+      }
+    }
+
+    return {
+      optimalDamping: Math.max(500, Math.min(5000, bestDamping)),
+      optimalEnergy: Math.max(0, Math.min(1500, bestEnergy)),
+      efficiency: bestScore
+    };
+  }
+
+  /**
+   * Evaluate comfort score for given damping
+   */
+  private evaluateComfortScore(inputs: SuspensionInputs, damping: number): number {
+    const optimalDamping = this.getOptimalDampingForConditions(inputs);
+    const deviation = Math.abs(damping - optimalDamping) / optimalDamping;
+    return Math.max(0, 1 - deviation);
+  }
+
+  /**
+   * Evaluate energy recovery score
+   */
+  private evaluateEnergyScore(inputs: SuspensionInputs, energyRate: number): number {
+    const maxPossible = Math.abs(inputs.suspensionVelocity) * 1000;
+    if (maxPossible === 0) return 0;
+    return Math.min(1, energyRate / maxPossible);
+  }
+
+  /**
+   * Evaluate stability score for given damping
+   */
+  private evaluateStabilityScore(inputs: SuspensionInputs, damping: number): number {
+    // Higher damping generally improves stability, but too high reduces comfort
+    const normalizedDamping = damping / 5000;
+    const stabilityFactor = Math.min(1, normalizedDamping * 1.2);
+    const comfortPenalty = Math.max(0, normalizedDamping - 0.8) * 0.5;
+    return Math.max(0, stabilityFactor - comfortPenalty);
+  }
+
+  /**
+   * Apply adaptive adjustments based on learned performance
+   */
+  private applyAdaptiveAdjustments(outputs: SuspensionOutputs, inputs: SuspensionInputs): SuspensionOutputs {
+    const adaptiveFactors = this.calculateAdaptiveFactors(inputs);
+
+    return {
+      ...outputs,
+      dampingCoefficient: outputs.dampingCoefficient * adaptiveFactors.dampingFactor,
+      energyRecoveryRate: outputs.energyRecoveryRate * adaptiveFactors.energyFactor,
+      valvePosition: Math.max(0, Math.min(1, outputs.valvePosition * adaptiveFactors.valveFactor))
+    };
+  }
+
+  /**
+   * Calculate adaptive factors based on historical performance
+   */
+  private calculateAdaptiveFactors(inputs: SuspensionInputs): {
+    dampingFactor: number;
+    energyFactor: number;
+    valveFactor: number;
+  } {
+    const recentPerformance = this.performanceHistory.slice(-this.adaptiveParams.performanceWindow);
+    
+    if (recentPerformance.length < 10) {
+      return { dampingFactor: 1.0, energyFactor: 1.0, valveFactor: 1.0 };
+    }
+
+    const avgEfficiency = recentPerformance.reduce((sum, p) => sum + p.efficiency, 0) / recentPerformance.length;
+    const avgComfort = recentPerformance.reduce((sum, p) => sum + p.comfort, 0) / recentPerformance.length;
+    const avgStability = recentPerformance.reduce((sum, p) => sum + p.stability, 0) / recentPerformance.length;
+
+    // Adjust factors based on performance
+    let dampingFactor = 1.0;
+    let energyFactor = 1.0;
+    let valveFactor = 1.0;
+
+    if (avgComfort < 0.6) {
+      dampingFactor *= 0.9; // Reduce damping for better comfort
+    }
+    if (avgEfficiency < 0.5) {
+      energyFactor *= 1.1; // Increase energy recovery
+      valveFactor *= 1.05; // Open valves more
+    }
+    if (avgStability < 0.7) {
+      dampingFactor *= 1.1; // Increase damping for stability
+    }
+
+    return {
+      dampingFactor: Math.max(0.8, Math.min(1.2, dampingFactor)),
+      energyFactor: Math.max(0.8, Math.min(1.2, energyFactor)),
+      valveFactor: Math.max(0.9, Math.min(1.1, valveFactor))
+    };
+  }
+
+  /**
+   * Update adaptive weights for fuzzy rules based on performance
+   */
+  private updateAdaptiveWeights(inputs: SuspensionInputs): void {
+    if (this.performanceHistory.length < 2) return;
+
+    const recentPerformance = this.performanceHistory.slice(-5);
+    const avgPerformance = recentPerformance.reduce((sum, p) => 
+      sum + (p.efficiency + p.comfort + p.stability) / 3, 0) / recentPerformance.length;
+
+    this.fuzzyRules.forEach(rule => {
+      const currentWeight = this.adaptiveWeights.get(rule.id) || rule.weight;
+      const performanceHistory = this.rulePerformanceHistory.get(rule.id) || [];
+      
+      // Update rule performance (simplified)
+      performanceHistory.push(avgPerformance);
+      if (performanceHistory.length > this.adaptiveParams.performanceWindow) {
+        performanceHistory.shift();
+      }
+
+      // Calculate new adaptive weight
+      const avgRulePerformance = performanceHistory.reduce((sum, p) => sum + p, 0) / performanceHistory.length;
+      const performanceDelta = avgRulePerformance - 0.7; // Target performance
+      
+      const weightAdjustment = performanceDelta * this.adaptiveParams.learningRate;
+      const newWeight = currentWeight + weightAdjustment;
+      
+      this.adaptiveWeights.set(rule.id, Math.max(0.1, Math.min(1.0, newWeight)));
+      this.rulePerformanceHistory.set(rule.id, performanceHistory);
+    });
+  }
+
+  /**
+   * Update road condition history
+   */
+  private updateRoadConditionHistory(inputs: SuspensionInputs): void {
+    this.roadConditionHistory.push({
+      timestamp: Date.now(),
+      roughness: inputs.roadRoughness,
+      gradient: inputs.roadGradient,
+      surface: inputs.surfaceType
+    });
+
+    // Keep only recent history
+    if (this.roadConditionHistory.length > 100) {
+      this.roadConditionHistory.shift();
+    }
+  }
+
+  /**
+   * Update driving pattern history
+   */
+  private updateDrivingPatternHistory(inputs: SuspensionInputs): void {
+    const aggression = (inputs.accelerationPattern + inputs.brakingPattern + inputs.corneringPattern) / 3;
+    const smoothness = 1 - Math.abs(inputs.suspensionVelocity) / 2; // Simplified
+    const efficiency = inputs.energyStorageLevel; // Simplified
+
+    this.drivingPatternHistory.push({
+      timestamp: Date.now(),
+      aggression,
+      smoothness: Math.max(0, Math.min(1, smoothness)),
+      efficiency
+    });
+
+    // Keep only recent history
+    if (this.drivingPatternHistory.length > 100) {
+      this.drivingPatternHistory.shift();
+    }
+  }
+
+  /**
+   * Update advanced performance history with stability metric
+   */
+  private updateAdvancedPerformanceHistory(outputs: SuspensionOutputs, inputs: SuspensionInputs): void {
+    const stability = this.calculateStabilityMetric(outputs, inputs);
+    
+    this.performanceHistory.push({
+      timestamp: Date.now(),
+      efficiency: outputs.energyEfficiency,
+      comfort: outputs.comfortIndex,
+      stability
+    });
+
+    // Keep only recent history
+    if (this.performanceHistory.length > 1000) {
+      this.performanceHistory.shift();
+    }
+  }
+
+  /**
+   * Calculate stability metric based on damping and road conditions
+   */
+  private calculateStabilityMetric(outputs: SuspensionOutputs, inputs: SuspensionInputs): number {
+    const dampingStability = Math.min(1, outputs.dampingCoefficient / 3000);
+    const velocityStability = Math.max(0, 1 - Math.abs(inputs.suspensionVelocity));
+    const roadStability = 1 - inputs.roadRoughness;
+    
+    return (dampingStability + velocityStability + roadStability) / 3;
+  }
+
+  /**
+   * Calculate trend from historical data
+   */
+  private calculateTrend(data: number[]): number {
+    if (data.length < 2) return 0;
+    
+    const n = data.length;
+    const sumX = (n * (n - 1)) / 2;
+    const sumY = data.reduce((sum, val) => sum + val, 0);
+    const sumXY = data.reduce((sum, val, index) => sum + val * index, 0);
+    const sumX2 = (n * (n - 1) * (2 * n - 1)) / 6;
+    
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    return isNaN(slope) ? 0 : slope;
+  }
+
+  /**
+   * Get adaptive control parameters for external monitoring
+   */
+  public getAdaptiveParameters(): {
+    adaptiveParams: AdaptiveParameters;
+    predictiveParams: PredictiveParameters;
+    optimizationObjectives: OptimizationObjectives;
+    currentAdaptiveWeights: Map<string, number>;
+  } {
+    return {
+      adaptiveParams: { ...this.adaptiveParams },
+      predictiveParams: { ...this.predictiveParams },
+      optimizationObjectives: { ...this.optimizationObjectives },
+      currentAdaptiveWeights: new Map(this.adaptiveWeights)
+    };
+  }
+
+  /**
+   * Update optimization objectives dynamically
+   */
+  public updateOptimizationObjectives(newObjectives: Partial<OptimizationObjectives>): void {
+    this.optimizationObjectives = {
+      ...this.optimizationObjectives,
+      ...newObjectives
+    };
+
+    // Normalize weights to sum to 1
+    const totalWeight = Object.values(this.optimizationObjectives).reduce((sum, weight) => sum + weight, 0);
+    if (totalWeight > 0) {
+      Object.keys(this.optimizationObjectives).forEach(key => {
+        (this.optimizationObjectives as any)[key] /= totalWeight;
+      });
+    }
   }
 }

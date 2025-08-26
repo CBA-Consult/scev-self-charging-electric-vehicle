@@ -142,6 +142,31 @@ export {
   type HydraulicDamperSystemConfig
 } from './HydraulicDamperIntegration';
 
+// Advanced Hydraulic Regenerative Suspension Controller exports
+export {
+  HydraulicRegenerativeSuspensionController,
+  type SuspensionInputs,
+  type SuspensionOutputs,
+  type HRSFuzzySet,
+  type HRSFuzzyRule,
+  type AdaptiveParameters,
+  type PredictiveParameters,
+  type OptimizationObjectives
+} from './HydraulicRegenerativeSuspensionController';
+
+// Road condition and driving pattern analyzer exports
+export {
+  RoadConditionAnalyzer,
+  type RoadSensorData,
+  type RoadConditionOutput
+} from './RoadConditionAnalyzer';
+
+export {
+  DrivingPatternAnalyzer,
+  type DrivingBehaviorData,
+  type DrivingPatternOutput
+} from './DrivingPatternAnalyzer';
+
 // Continuous energy generation exports
 export {
   ContinuousEnergyGenerator,
@@ -280,7 +305,34 @@ export function createIntegratedDamperSystem(
   systemConfig?: Partial<HydraulicDamperSystemConfig>
 ) {
   return new HydraulicDamperIntegration(vehicleParams, systemConfig);
+}
 
+/**
+ * Factory function to create an advanced Hydraulic Regenerative Suspension controller
+ */
+export function createAdvancedHRSController(
+  adaptiveParams?: Partial<AdaptiveParameters>,
+  predictiveParams?: Partial<PredictiveParameters>,
+  optimizationObjectives?: Partial<OptimizationObjectives>
+) {
+  return new HydraulicRegenerativeSuspensionController(adaptiveParams, predictiveParams, optimizationObjectives);
+}
+
+/**
+ * Factory function to create a road condition analyzer
+ */
+export function createRoadConditionAnalyzer() {
+  return new RoadConditionAnalyzer();
+}
+
+/**
+ * Factory function to create a driving pattern analyzer
+ */
+export function createDrivingPatternAnalyzer() {
+  return new DrivingPatternAnalyzer();
+}
+
+/**
  * Factory function to create an enhanced energy system with continuous generation
  */
 export function createEnhancedEnergySystem(
