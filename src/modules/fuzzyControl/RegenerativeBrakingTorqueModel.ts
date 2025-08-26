@@ -31,6 +31,9 @@ export interface TorqueDistribution {
   mechanicalBrakingForce: number;  // N - remaining force for mechanical brakes
   regeneratedPower: number;        // W - total regenerated power
   energyRecoveryEfficiency: number; // 0-1 - actual energy recovery efficiency
+  continuousHarvestingPower?: number; // W - power from continuous energy harvesting
+  totalEnergyRecovered?: number;   // W - total energy recovered (regen + harvesting)
+  propulsionEfficiencyImpact?: number; // 0-1 - impact on propulsion efficiency
 }
 
 export interface MotorConstraints {
@@ -136,6 +139,80 @@ export class RegenerativeBrakingTorqueModel {
   }
 
   /**
+   * Enhanced torque distribution calculation with continuous energy harvesting
+   */
+  public calculateEnhancedTorqueDistribution(
+    brakingDemand: BrakingDemand,
+    regenerativeBrakingRatio: number,
+    batterySOC: number,
+    motorLoad: number = 0.5,
+    propulsionPower: number = 0
+  ): TorqueDistribution {
+    // Get base distribution from regenerative braking
+    const baseDistribution = this.calculateTorqueDistribution(brakingDemand, regenerativeBrakingRatio, batterySOC);
+    
+    // Calculate continuous harvesting power
+    const avgWheelTorque = (baseDistribution.frontLeftMotor + baseDistribution.frontRightMotor) / 2;
+    const continuousHarvestingPower = this.calculateContinuousHarvestingPower(
+      brakingDemand.vehicleSpeed,
+      avgWheelTorque,
+      motorLoad,
+      batterySOC
+    );
+    
+    // Calculate comprehensive energy efficiency
+    const speedMs = brakingDemand.vehicleSpeed / 3.6;
+    const regenForce = (baseDistribution.frontLeftMotor + baseDistribution.frontRightMotor) / this.vehicleParams.wheelRadius;
+    const comprehensiveEfficiency = this.calculateComprehensiveEnergyEfficiency(
+      regenForce,
+      brakingDemand.totalBrakingForce,
+      continuousHarvestingPower,
+      brakingDemand.vehicleSpeed,
+      propulsionPower
+    );
+    
+    // Calculate propulsion efficiency impact
+    const propulsionImpact = this.calculatePropulsionEfficiencyImpact(
+      continuousHarvestingPower,
+      propulsionPower,
+      motorLoad
+    );
+    
+    // Calculate total energy recovered
+    const totalEnergyRecovered = baseDistribution.regeneratedPower + continuousHarvestingPower;
+    
+    // Create enhanced distribution
+    const enhancedDistribution: TorqueDistribution = {
+      ...baseDistribution,
+      energyRecoveryEfficiency: comprehensiveEfficiency,
+      continuousHarvestingPower,
+      totalEnergyRecovered,
+      propulsionEfficiencyImpact: propulsionImpact
+    };
+    
+    return enhancedDistribution;
+  }
+
+  private calculatePropulsionEfficiencyImpact(
+    harvestingPower: number,
+    propulsionPower: number,
+    motorLoad: number
+  ): number {
+    if (propulsionPower === 0 || harvestingPower === 0) return 0;
+    
+    // Base impact is proportional to harvesting ratio
+    const harvestingRatio = harvestingPower / propulsionPower;
+    let baseImpact = harvestingRatio * 0.02; // 2% impact per 100% harvesting
+    
+    // Increase impact under high load conditions
+    const loadFactor = 1 + motorLoad * 0.5;
+    baseImpact *= loadFactor;
+    
+    // Ensure impact never exceeds 5% for safety
+    return Math.min(0.05, baseImpact);
+  }
+
+  /**
    * Calculate maximum regenerative braking force based on motor capabilities
    */
   private calculateMaxRegenerativeForce(speedMs: number, batterySOC: number): number {
@@ -206,6 +283,58 @@ export class RegenerativeBrakingTorqueModel {
   }
 
   /**
+   * Calculate continuous energy harvesting power from wheel rotation
+   * This method estimates power that can be harvested during normal driving
+   */
+  public calculateContinuousHarvestingPower(
+    vehicleSpeed: number,
+    wheelTorque: number,
+    motorLoad: number,
+    batterySOC: number
+  ): number {
+    const speedMs = vehicleSpeed / 3.6;
+    
+    // Don't harvest at very low speeds or when battery is full
+    if (speedMs < 5.56 || batterySOC > 0.95) { // 5.56 m/s = 20 km/h
+      return 0;
+    }
+
+    // Calculate available rotational power
+    const wheelSpeedRpm = (speedMs / this.vehicleParams.wheelRadius) * 60 / (2 * Math.PI);
+    const angularVelocity = wheelSpeedRpm * 2 * Math.PI / 60;
+    const rotationalPower = wheelTorque * angularVelocity;
+
+    // Calculate optimal harvesting ratio based on conditions
+    let harvestingRatio = 0.08; // Base 8% harvesting ratio
+
+    // Adjust based on motor load (harvest less when motor is working hard)
+    harvestingRatio *= (1 - motorLoad * 0.6);
+
+    // Adjust based on battery SOC (harvest more when battery is low)
+    harvestingRatio *= (1.5 - batterySOC);
+
+    // Speed optimization (peak efficiency at medium speeds)
+    const speedOptimization = this.calculateSpeedHarvestingFactor(vehicleSpeed);
+    harvestingRatio *= speedOptimization;
+
+    // Apply electromagnetic induction efficiency
+    const inductionEfficiency = 0.92; // High-efficiency electromagnetic induction
+    
+    const harvestedPower = rotationalPower * harvestingRatio * inductionEfficiency;
+    
+    return Math.max(0, harvestedPower);
+  }
+
+  private calculateSpeedHarvestingFactor(vehicleSpeed: number): number {
+    // Optimal harvesting efficiency curve
+    if (vehicleSpeed < 30) return 0.6;
+    if (vehicleSpeed < 60) return 0.6 + (vehicleSpeed - 30) * 0.4 / 30;
+    if (vehicleSpeed <= 80) return 1.0;
+    if (vehicleSpeed <= 120) return 1.0 - (vehicleSpeed - 80) * 0.2 / 40;
+    return 0.8;
+  }
+
+  /**
    * Calculate energy recovery efficiency
    */
   private calculateEnergyRecoveryEfficiency(
@@ -220,6 +349,54 @@ export class RegenerativeBrakingTorqueModel {
     const motorEfficiency = this.vehicleParams.motorEfficiency;
     
     return baseEfficiency * speedEfficiency * motorEfficiency;
+  }
+
+  /**
+   * Calculate comprehensive energy recovery efficiency including continuous harvesting
+   */
+  public calculateComprehensiveEnergyEfficiency(
+    regenForce: number,
+    totalForce: number,
+    continuousHarvestingPower: number,
+    vehicleSpeed: number,
+    propulsionPower: number
+  ): number {
+    const speedMs = vehicleSpeed / 3.6;
+    
+    // Calculate regenerative braking efficiency
+    const regenEfficiency = this.calculateEnergyRecoveryEfficiency(regenForce, totalForce, speedMs);
+    
+    // Calculate continuous harvesting efficiency
+    let harvestingEfficiency = 0;
+    if (propulsionPower > 0) {
+      harvestingEfficiency = continuousHarvestingPower / propulsionPower;
+      // Ensure harvesting doesn't exceed reasonable limits
+      harvestingEfficiency = Math.min(harvestingEfficiency, 0.15); // Max 15% harvesting
+    }
+    
+    // Calculate combined efficiency with weighted average
+    const regenWeight = totalForce > 0 ? 0.7 : 0; // Higher weight during braking
+    const harvestingWeight = 1 - regenWeight;
+    
+    const combinedEfficiency = (regenEfficiency * regenWeight) + (harvestingEfficiency * harvestingWeight);
+    
+    // Apply system-wide efficiency factors
+    const systemEfficiency = this.calculateSystemEfficiencyFactor(vehicleSpeed);
+    
+    return combinedEfficiency * systemEfficiency;
+  }
+
+  private calculateSystemEfficiencyFactor(vehicleSpeed: number): number {
+    // System efficiency varies with operating conditions
+    const baseSystemEfficiency = 0.95;
+    
+    // Temperature effects (assuming optimal temperature range)
+    const temperatureEfficiency = 0.98;
+    
+    // Speed-dependent system losses
+    const speedEfficiency = vehicleSpeed < 150 ? 1.0 : 1.0 - (vehicleSpeed - 150) * 0.001;
+    
+    return baseSystemEfficiency * temperatureEfficiency * speedEfficiency;
   }
 
   /**

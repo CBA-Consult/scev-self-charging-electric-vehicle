@@ -31,6 +31,15 @@ export {
   type SafetyLimits
 } from './FuzzyControlIntegration';
 
+// Continuous energy harvesting exports
+export {
+  ContinuousEnergyHarvester,
+  type WheelRotationInputs,
+  type EnergyHarvestingOutputs,
+  type InductionCoilParameters,
+  type HarvestingStrategy
+} from './ContinuousEnergyHarvester';
+
 // MR Fluid system exports
 export {
   MRFluidFormulation,
@@ -289,6 +298,11 @@ export function createTestInputs(overrides?: Partial<SystemInputs>): SystemInput
     ambientTemperature: 20,        // °C
     roadSurface: 'dry',
     visibility: 'clear',
+    
+    // Continuous energy harvesting inputs
+    motorLoad: 0.5,                // 50% motor load
+    propulsionPower: 25000,        // 25kW propulsion power
+    wheelTorque: 200,              // 200Nm wheel torque
     
     ...overrides
   };

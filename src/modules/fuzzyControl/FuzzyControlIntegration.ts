@@ -47,6 +47,11 @@ export interface SystemInputs {
   ambientTemperature: number;      // °C
   roadSurface: 'dry' | 'wet' | 'snow' | 'ice';
   visibility: 'clear' | 'rain' | 'fog' | 'snow';
+  
+  // Additional inputs for continuous energy harvesting
+  motorLoad?: number;              // 0-1 - current motor load
+  propulsionPower?: number;        // W - current propulsion power
+  wheelTorque?: number;            // Nm - current wheel torque
 }
 
 export interface SystemOutputs {
@@ -65,6 +70,9 @@ export interface SystemOutputs {
   // Energy recovery
   regeneratedPower: number;        // W
   energyRecoveryEfficiency: number; // 0-1
+  continuousHarvestingPower?: number; // W - power from continuous harvesting
+  totalEnergyRecovered?: number;   // W - total energy recovered
+  propulsionEfficiencyImpact?: number; // 0-1 - impact on propulsion efficiency
   
   // System status
   systemStatus: 'normal' | 'degraded' | 'fault';
@@ -73,6 +81,7 @@ export interface SystemOutputs {
     totalBrakingForce: number;     // N
     brakingEfficiency: number;     // 0-1
     thermalStatus: 'normal' | 'warm' | 'hot';
+    harvestingEfficiency?: number; // 0-1 - continuous harvesting efficiency
   };
 }
 
@@ -294,10 +303,16 @@ export class FuzzyControlIntegration {
         inputs.yawRate
       );
     } else {
-      return this.torqueModel.calculateTorqueDistribution(
+      // Use enhanced torque distribution with continuous harvesting
+      const motorLoad = inputs.motorLoad || 0.5; // Default to 50% if not provided
+      const propulsionPower = inputs.propulsionPower || 0; // Default to 0 if not provided
+      
+      return this.torqueModel.calculateEnhancedTorqueDistribution(
         brakingDemand,
         regenerativeBrakingRatio,
-        inputs.batterySOC
+        inputs.batterySOC,
+        motorLoad,
+        propulsionPower
       );
     }
   }
@@ -433,6 +448,11 @@ export class FuzzyControlIntegration {
       thermalStatus = 'hot';
     }
 
+    // Calculate harvesting efficiency
+    const harvestingEfficiency = distribution.continuousHarvestingPower && inputs.propulsionPower 
+      ? distribution.continuousHarvestingPower / inputs.propulsionPower 
+      : 0;
+
     return {
       motorTorques: {
         frontLeft: distribution.frontLeftMotor,
@@ -445,12 +465,16 @@ export class FuzzyControlIntegration {
         (distribution.regeneratedPower / (distribution.regeneratedPower + distribution.mechanicalBrakingForce * inputs.vehicleSpeed / 3.6)) : 0,
       regeneratedPower: distribution.regeneratedPower,
       energyRecoveryEfficiency: distribution.energyRecoveryEfficiency,
+      continuousHarvestingPower: distribution.continuousHarvestingPower,
+      totalEnergyRecovered: distribution.totalEnergyRecovered,
+      propulsionEfficiencyImpact: distribution.propulsionEfficiencyImpact,
       systemStatus,
       activeWarnings,
       performanceMetrics: {
         totalBrakingForce,
         brakingEfficiency,
-        thermalStatus
+        thermalStatus,
+        harvestingEfficiency
       }
     };
   }
