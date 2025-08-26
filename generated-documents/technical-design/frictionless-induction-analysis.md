@@ -422,4 +422,4 @@ The frictionless electromagnetic induction system, combined with optimized regen
 - **Author:** SCEV Technical Analysis Team
 - **Reviewed by:** Chief Technology Officer
 - **Approved by:** Project Director
-- **Next Review Date:** April 27, 2025
+- **Next Review Date:** August 27, 2025
