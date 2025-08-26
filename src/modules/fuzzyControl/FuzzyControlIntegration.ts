@@ -525,7 +525,7 @@ export class FuzzyControlIntegration {
         totalBrakingForce,
         brakingEfficiency,
         thermalStatus,
-        piezoelectricMetrics: piezoelectricResults?.harvestingMetrics
+        piezoelectricMetrics: piezoelectricResults?.harvestingMetrics,
         harvestingEfficiency
       }
     };
