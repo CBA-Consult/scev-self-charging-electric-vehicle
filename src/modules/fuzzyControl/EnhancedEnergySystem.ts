@@ -9,6 +9,15 @@
 import { FuzzyControlIntegration, SystemInputs, SystemOutputs } from './FuzzyControlIntegration';
 import { ContinuousEnergyGenerator, WheelRotationData, PowerOutput, ElectromagneticConfig } from './ContinuousEnergyGenerator';
 import { VehicleParameters } from './RegenerativeBrakingTorqueModel';
+import {
+  OptimalEnergyConverter,
+  ConversionOptimizationConfig
+} from '../optimalEnergyAlgorithms/OptimalEnergyConverter';
+import {
+  EnergyConversionParameters,
+  EnergySystemState,
+  OptimizationObjectives
+} from '../optimalEnergyAlgorithms/types';
 
 export interface EnhancedSystemInputs extends SystemInputs {
   wheelRotationData: {
@@ -66,6 +75,7 @@ export class EnhancedEnergySystem {
     totalConsumption: number;
     efficiency: number;
   }>;
+  private optimalEnergyConverter: OptimalEnergyConverter;
 
   constructor(
     vehicleParams: VehicleParameters,
@@ -82,18 +92,89 @@ export class EnhancedEnergySystem {
     electromagneticConfigs.forEach((config, wheelPosition) => {
       this.continuousGenerators.set(wheelPosition, new ContinuousEnergyGenerator(config));
     });
+
+    // Initialize optimal energy converter
+    this.initializeOptimalEnergyConverter();
+  }
+
+  /**
+   * Initialize optimal energy converter with advanced algorithms
+   */
+  private initializeOptimalEnergyConverter(): void {
+    const conversionConfig: ConversionOptimizationConfig = {
+      algorithm: {
+        algorithm: 'neural_network',
+        parameters: {
+          learningRate: 0.001,
+          generations: 50,
+          batchSize: 32
+        },
+        convergenceCriteria: {
+          maxIterations: 50,
+          toleranceThreshold: 0.001,
+          improvementThreshold: 0.01,
+          stallGenerations: 10
+        }
+      },
+      objectives: {
+        maximizeEfficiency: {
+          weight: 0.4,
+          target: 0.95,
+          priority: 'high'
+        },
+        minimizeEnergyLoss: {
+          weight: 0.3,
+          target: 50, // W
+          priority: 'medium'
+        },
+        maximizePowerOutput: {
+          weight: 0.2,
+          target: 50000, // W
+          priority: 'medium'
+        },
+        minimizeCost: {
+          weight: 0.05,
+          target: 0.03, // $/kWh
+          priority: 'low'
+        },
+        maximizeLifespan: {
+          weight: 0.25,
+          target: 87600, // 10 years
+          priority: 'high'
+        },
+        minimizeEmissions: {
+          weight: 0.2,
+          target: 0.05, // kg CO2
+          priority: 'medium'
+        }
+      },
+      constraints: {
+        efficiency: { minimum: 0.6, maximum: 0.98 },
+        power: { minimum: 0, maximum: 100000 },
+        temperature: { minimum: -40, maximum: 80 },
+        cost: { maximum: 0.1 },
+        emissions: { maximum: 0.5 },
+        reliability: { minimum: 0.9 },
+        responseTime: { maximum: 1000 }
+      },
+      updateInterval: 30000, // 30 seconds
+      adaptiveLearning: true,
+      realTimeOptimization: true
+    };
+
+    this.optimalEnergyConverter = new OptimalEnergyConverter(conversionConfig);
   }
 
   /**
    * Process complete energy system cycle for vehicles
    */
-  public processEnhancedEnergySystem(inputs: EnhancedSystemInputs): EnhancedSystemOutputs {
+  public async processEnhancedEnergySystem(inputs: EnhancedSystemInputs): Promise<EnhancedSystemOutputs> {
     try {
       // Process traditional fuzzy control regenerative braking
       const fuzzyOutputs = this.fuzzyControlSystem.processControlCycle(inputs);
 
-      // Process continuous energy generation for each wheel
-      const continuousGeneration = this.processContinuousGeneration(inputs);
+      // Process continuous energy generation for each wheel with optimization
+      const continuousGeneration = await this.processOptimizedContinuousGeneration(inputs);
 
       // Calculate total system performance
       const totalGeneratedPower = this.calculateTotalGeneratedPower(fuzzyOutputs, continuousGeneration);
@@ -119,6 +200,101 @@ export class EnhancedEnergySystem {
       console.error('Enhanced energy system error:', error);
       return this.generateFailsafeOutputs(inputs);
     }
+  }
+
+  /**
+   * Process optimized continuous energy generation using advanced algorithms
+   */
+  private async processOptimizedContinuousGeneration(inputs: EnhancedSystemInputs): Promise<{
+    frontLeft: PowerOutput;
+    frontRight: PowerOutput;
+    rearLeft?: PowerOutput;
+    rearRight?: PowerOutput;
+  }> {
+    const results: any = {};
+
+    // Process each wheel with optimization
+    for (const [position, generator] of this.continuousGenerators) {
+      const wheelData = this.getWheelDataForPosition(position, inputs);
+      if (wheelData) {
+        // Create energy conversion parameters for optimization
+        const conversionParams: EnergyConversionParameters = {
+          sourceType: 'electromagnetic',
+          inputPower: wheelData.rotationalPower,
+          inputVoltage: 12, // Typical automotive voltage
+          inputCurrent: wheelData.rotationalPower / 12,
+          inputFrequency: wheelData.rotationFrequency,
+          temperature: inputs.ambientTemperature,
+          efficiency: 0.85, // Base efficiency
+          loadResistance: 10, // Ohms
+          conversionRatio: 1.0,
+          harmonicDistortion: 2.0, // %
+          powerFactor: 0.95
+        };
+
+        // Create system state
+        const systemState: EnergySystemState = {
+          timestamp: Date.now(),
+          sources: new Map([[position, conversionParams]]),
+          storage: new Map(),
+          loads: new Map([['vehicle_load', { power: inputs.powerDemand / 4, priority: 1 }]]),
+          grid: {
+            frequency: 50, // Hz
+            voltage: 400, // V
+            powerFactor: 0.95,
+            harmonics: 2.0
+          },
+          environment: {
+            temperature: inputs.ambientTemperature,
+            humidity: 50,
+            pressure: 101325,
+            windSpeed: 0,
+            solarIrradiance: 0
+          }
+        };
+
+        try {
+          // Optimize energy conversion
+          const optimizationResult = await this.optimalEnergyConverter.optimizeConversion(
+            conversionParams,
+            systemState
+          );
+
+          if (optimizationResult.success) {
+            // Apply optimized parameters to generator
+            const optimizedParams = optimizationResult.optimalParameters.conversionParameters;
+            const optimizedOutput = generator.calculateContinuousGeneration(
+              wheelData,
+              inputs.batterySOC,
+              inputs.ambientTemperature
+            );
+
+            // Enhance output with optimization results
+            results[position] = {
+              ...optimizedOutput,
+              instantaneousPower: optimizedOutput.instantaneousPower * (optimizedParams?.efficiency || 1.0),
+              efficiency: optimizationResult.performanceMetrics.efficiency.optimal
+            };
+          } else {
+            // Fallback to standard generation
+            results[position] = generator.calculateContinuousGeneration(
+              wheelData,
+              inputs.batterySOC,
+              inputs.ambientTemperature
+            );
+          }
+        } catch (error) {
+          console.warn(`Optimization failed for ${position}, using standard generation:`, error);
+          results[position] = generator.calculateContinuousGeneration(
+            wheelData,
+            inputs.batterySOC,
+            inputs.ambientTemperature
+          );
+        }
+      }
+    }
+
+    return results;
   }
 
   /**
