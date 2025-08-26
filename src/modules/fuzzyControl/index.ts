@@ -170,6 +170,15 @@ export {
   type SystemEfficiencyAnalysis
 } from './FourWheelEnergyAnalyzer';
 
+// MR Damper Test Vehicle exports
+export {
+  MRDamperTestVehicle,
+  type TestVehicleConfiguration,
+  type TestScenario,
+  type VehicleState,
+  type TestResults
+} from './MRDamperTestVehicle';
+
 /**
  * Factory function to create a complete fuzzy control system
  */
@@ -279,6 +288,25 @@ export function createEnhancedEnergySystem(
   electromagneticConfigs: Map<string, ElectromagneticConfig>
 ) {
   return new EnhancedEnergySystem(vehicleParams, electromagneticConfigs);
+}
+
+/**
+ * Factory function to create an MR damper test vehicle
+ */
+export function createMRDamperTestVehicle(
+  vehicleConfig: TestVehicleConfiguration,
+  vehicleParams: VehicleParameters,
+  mrFluidConfig: MRFluidSystemConfiguration,
+  damperConfig?: Partial<DamperConfiguration>,
+  damperConstraints?: Partial<DamperConstraints>
+) {
+  return new MRDamperTestVehicle(
+    vehicleConfig,
+    vehicleParams,
+    mrFluidConfig,
+    damperConfig,
+    damperConstraints
+  );
 }
 
 /**
@@ -401,6 +429,52 @@ export const defaultIntegratedSystemConfig: HydraulicDamperSystemConfig = {
     maxCombinedPower: 8000,            // W - total system power limit
     batteryChargingThreshold: 0.95,    // Reduce charging when battery > 95%
     thermalManagementEnabled: true
+  }
+};
+
+/**
+ * Default test vehicle configuration for MR damper testing
+ */
+export const defaultTestVehicleConfiguration: TestVehicleConfiguration = {
+  vehicleId: 'MR_TEST_VEHICLE_DEFAULT',
+  vehicleType: 'sedan',
+  damperCount: 4,
+  testEnvironment: {
+    enableDataLogging: true,
+    logInterval: 100,                  // 100ms logging interval
+    enableRealTimeMonitoring: true,
+    enablePerformanceAnalytics: true
+  },
+  operationalLimits: {
+    maxTestSpeed: 120,                 // km/h
+    maxAcceleration: 8,                // m/s²
+    maxDamperForce: 8000,              // N
+    emergencyStopThreshold: 140        // °C
+  }
+};
+
+/**
+ * Default MR fluid system configuration for testing
+ */
+export const defaultMRFluidConfiguration: MRFluidSystemConfiguration = {
+  selectedFormulation: 'high_performance_automotive',
+  brakingSystemConfig: {
+    enableMRFluidBraking: true,
+    mrFluidBrakingRatio: 0.4,
+    adaptiveFieldControl: true,
+    maxMagneticField: 80000            // A/m
+  },
+  suspensionSystemConfig: {
+    enableMRFluidSuspension: true,
+    suspensionEnergyRecovery: true,
+    adaptiveDamping: true,
+    dampingRange: [600, 5000]          // N·s/m
+  },
+  thermalManagement: {
+    thermalDerating: true,
+    maxOperatingTemperature: 120,      // °C
+    coolingSystemEnabled: true,
+    temperatureMonitoring: true
   }
 };
 
