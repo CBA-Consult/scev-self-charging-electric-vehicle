@@ -15,6 +15,16 @@ import {
   StorageSystemStatus,
   StorageTechnology
 } from './types';
+import { 
+  OptimalStorageManager,
+  StorageOptimizationConfig,
+  StorageSystemConfiguration
+} from '../optimalEnergyAlgorithms/OptimalStorageManager';
+import {
+  StorageOptimizationParameters,
+  OptimizationObjectives,
+  EnergySystemState
+} from '../optimalEnergyAlgorithms/types';
 
 export interface WindStorageSystemConfig {
   windFarmCapacity: number;       // MW - wind farm capacity
@@ -43,11 +53,13 @@ export class WindEnergyStorageSystem {
   
   private storageComponents: Map<string, StorageTechnology> = new Map();
   private controlQueue: StorageControlCommand[] = [];
+  private optimalStorageManager: OptimalStorageManager;
   
   constructor(config: WindStorageSystemConfig) {
     this.config = config;
     this.initializeStorageComponents();
     this.initializeSystemStatus();
+    this.initializeOptimalStorageManager();
   }
 
   private initializeStorageComponents(): void {
@@ -162,18 +174,175 @@ export class WindEnergyStorageSystem {
     };
   }
 
-  public processWindStorageOperation(inputs: WindStorageInputs): StorageSystemOutputs {
+  /**
+   * Initialize optimal storage manager with advanced algorithms
+   */
+  private initializeOptimalStorageManager(): void {
+    // Create storage optimization configuration
+    const optimizationConfig: StorageOptimizationConfig = {
+      algorithm: {
+        algorithm: 'particle_swarm',
+        parameters: {
+          swarmSize: 30,
+          generations: 100,
+          inertiaWeight: 0.9,
+          cognitiveWeight: 2.0,
+          socialWeight: 2.0
+        },
+        convergenceCriteria: {
+          maxIterations: 100,
+          toleranceThreshold: 0.01,
+          improvementThreshold: 0.02,
+          stallGenerations: 15
+        }
+      },
+      objectives: {
+        maximizeEfficiency: {
+          weight: 0.4,
+          target: 0.95,
+          priority: 'high'
+        },
+        minimizeEnergyLoss: {
+          weight: 0.3,
+          target: 100, // W
+          priority: 'medium'
+        },
+        maximizePowerOutput: {
+          weight: 0.2,
+          target: this.config.storageConfiguration.batteryPower,
+          priority: 'medium'
+        },
+        minimizeCost: {
+          weight: 0.1,
+          target: 0.05, // $/kWh
+          priority: 'low'
+        },
+        maximizeLifespan: {
+          weight: 0.3,
+          target: 87600, // 10 years
+          priority: 'high'
+        },
+        minimizeEmissions: {
+          weight: 0.2,
+          target: 0.1, // kg CO2
+          priority: 'medium'
+        }
+      },
+      constraints: {
+        efficiency: { minimum: 0.7, maximum: 0.98 },
+        power: { minimum: 0, maximum: this.config.storageConfiguration.batteryPower * 1.1 },
+        temperature: { minimum: -20, maximum: 60 },
+        cost: { maximum: 0.15 },
+        emissions: { maximum: 1.0 },
+        reliability: { minimum: 0.95 },
+        responseTime: { maximum: 5000 }
+      },
+      updateInterval: 60000, // 1 minute
+      predictiveHorizon: 24, // 24 hours
+      degradationModeling: true,
+      thermalManagement: true,
+      loadForecasting: true
+    };
+
+    // Create storage system configuration
+    const storageSystemConfig: StorageSystemConfiguration = {
+      storageUnits: this.createStorageUnitsMap(),
+      interconnections: [
+        {
+          from: 'battery',
+          to: 'supercapacitor',
+          efficiency: 0.98,
+          maxPower: this.config.storageConfiguration.batteryPower * 0.5
+        }
+      ],
+      controlStrategy: 'centralized',
+      redundancyLevel: 0.2
+    };
+
+    this.optimalStorageManager = new OptimalStorageManager(
+      optimizationConfig,
+      storageSystemConfig
+    );
+  }
+
+  /**
+   * Create storage units map for optimization
+   */
+  private createStorageUnitsMap(): Map<string, StorageOptimizationParameters> {
+    const storageUnits = new Map<string, StorageOptimizationParameters>();
+
+    // Battery storage unit
+    if (this.config.storageConfiguration.batteryCapacity > 0) {
+      storageUnits.set('battery', {
+        storageType: 'battery',
+        capacity: this.config.storageConfiguration.batteryCapacity,
+        currentSOC: this.systemStatus.soc,
+        maxChargePower: this.config.storageConfiguration.batteryPower,
+        maxDischargePower: this.config.storageConfiguration.batteryPower,
+        chargingEfficiency: 0.92,
+        dischargingEfficiency: 0.94,
+        selfDischargeRate: 0.0001, // 0.01% per hour
+        cycleLife: 5000,
+        currentCycles: 0,
+        temperature: this.systemStatus.temperature,
+        degradationFactor: 1.0,
+        costPerCycle: 0.02
+      });
+    }
+
+    // Flywheel storage unit
+    if (this.config.storageConfiguration.flywheelCapacity > 0) {
+      storageUnits.set('flywheel', {
+        storageType: 'flywheel',
+        capacity: this.config.storageConfiguration.flywheelCapacity,
+        currentSOC: 0.5,
+        maxChargePower: this.config.storageConfiguration.flywheelPower || 1000,
+        maxDischargePower: this.config.storageConfiguration.flywheelPower || 1000,
+        chargingEfficiency: 0.93,
+        dischargingEfficiency: 0.93,
+        selfDischargeRate: 0.01, // 1% per hour
+        cycleLife: 100000,
+        currentCycles: 0,
+        temperature: this.systemStatus.temperature,
+        degradationFactor: 1.0,
+        costPerCycle: 0.001
+      });
+    }
+
+    // CAES storage unit
+    if (this.config.storageConfiguration.caesCapacity > 0) {
+      storageUnits.set('caes', {
+        storageType: 'caes',
+        capacity: this.config.storageConfiguration.caesCapacity,
+        currentSOC: 0.5,
+        maxChargePower: this.config.storageConfiguration.caesPower || 500,
+        maxDischargePower: this.config.storageConfiguration.caesPower || 500,
+        chargingEfficiency: 0.78,
+        dischargingEfficiency: 0.78,
+        selfDischargeRate: 0.0001, // Very low self-discharge
+        cycleLife: 20000,
+        currentCycles: 0,
+        temperature: this.systemStatus.temperature,
+        degradationFactor: 1.0,
+        costPerCycle: 0.005
+      });
+    }
+
+    return storageUnits;
+  }
+
+  public async processWindStorageOperation(inputs: WindStorageInputs): Promise<StorageSystemOutputs> {
     // Validate inputs
     this.validateInputs(inputs);
 
     // Update system status
     this.updateSystemStatus(inputs);
 
-    // Determine optimal storage operation
-    const operation = this.optimizeStorageOperation(inputs);
+    // Use optimal storage manager for advanced optimization
+    const optimizedOperation = await this.performOptimalStorageOptimization(inputs);
 
     // Execute storage commands
-    const outputs = this.executeStorageOperation(operation, inputs);
+    const outputs = this.executeStorageOperation(optimizedOperation, inputs);
 
     // Update performance history
     this.updatePerformanceHistory(outputs);
@@ -182,6 +351,127 @@ export class WindEnergyStorageSystem {
     this.checkSystemHealth(inputs, outputs);
 
     return outputs;
+  }
+
+  /**
+   * Perform optimal storage optimization using advanced algorithms
+   */
+  private async performOptimalStorageOptimization(inputs: WindStorageInputs): Promise<StorageControlCommand> {
+    try {
+      // Create current storage states
+      const currentStates = this.createStorageUnitsMap();
+      
+      // Update current SOC for all units
+      currentStates.forEach((params, unitId) => {
+        params.currentSOC = inputs.storageSOC;
+        params.temperature = inputs.ambientTemperature;
+      });
+
+      // Create system state
+      const systemState: EnergySystemState = {
+        timestamp: Date.now(),
+        sources: new Map(),
+        storage: currentStates,
+        loads: new Map([
+          ['grid_demand', { power: inputs.gridDemand, priority: 1 }]
+        ]),
+        grid: {
+          frequency: inputs.gridFrequency,
+          voltage: this.config.gridSpecs.nominalVoltage * 1000,
+          powerFactor: 0.95,
+          harmonics: 3.0
+        },
+        environment: {
+          temperature: inputs.ambientTemperature,
+          humidity: 50,
+          pressure: 101325,
+          windSpeed: inputs.windSpeed,
+          solarIrradiance: 0
+        }
+      };
+
+      // Calculate power demand and generation
+      const powerDemand = inputs.gridDemand;
+      const powerGeneration = inputs.windGeneration;
+
+      // Perform optimization
+      const optimizationResult = await this.optimalStorageManager.optimizeStorage(
+        currentStates,
+        systemState,
+        powerDemand,
+        powerGeneration
+      );
+
+      if (optimizationResult.success) {
+        // Convert optimization result to storage control command
+        return this.convertOptimizationToCommand(optimizationResult, inputs);
+      } else {
+        // Fallback to traditional optimization
+        console.warn('Optimal storage optimization failed, falling back to traditional method');
+        return this.optimizeStorageOperation(inputs);
+      }
+
+    } catch (error) {
+      console.error('Error in optimal storage optimization:', error);
+      // Fallback to traditional optimization
+      return this.optimizeStorageOperation(inputs);
+    }
+  }
+
+  /**
+   * Convert optimization result to storage control command
+   */
+  private convertOptimizationToCommand(
+    optimizationResult: any,
+    inputs: WindStorageInputs
+  ): StorageControlCommand {
+    const windSurplus = inputs.windGeneration - inputs.gridDemand;
+    
+    // Extract optimal power from optimization result
+    const optimalStorageParams = optimizationResult.optimalParameters.storageParameters;
+    
+    let command: 'charge' | 'discharge' | 'standby' | 'regulate';
+    let power = 0;
+    let priority: 'low' | 'medium' | 'high' | 'critical' = 'medium';
+
+    // Grid frequency regulation (highest priority)
+    const frequencyDeviation = inputs.gridFrequency - this.config.gridSpecs.nominalFrequency;
+    if (Math.abs(frequencyDeviation) > 0.1) {
+      command = 'regulate';
+      power = this.calculateFrequencyRegulationPower(frequencyDeviation);
+      priority = 'critical';
+    }
+    // Use optimization results for power flow decisions
+    else if (windSurplus > 0 && inputs.storageSOC < this.config.controlParameters.socTargets[1]) {
+      command = 'charge';
+      // Use optimized charging power if available
+      power = optimalStorageParams?.maxChargePower || 
+              Math.min(windSurplus, inputs.storagePower, 
+                      this.calculateMaxChargePower(inputs.storageSOC));
+      priority = 'medium';
+    }
+    else if (windSurplus < 0 && inputs.storageSOC > this.config.controlParameters.socTargets[0]) {
+      command = 'discharge';
+      // Use optimized discharging power if available
+      power = optimalStorageParams?.maxDischargePower || 
+              Math.min(Math.abs(windSurplus), inputs.storagePower,
+                      this.calculateMaxDischargePower(inputs.storageSOC));
+      priority = 'medium';
+    }
+    else {
+      command = 'standby';
+      power = 0;
+      priority = 'low';
+    }
+
+    return {
+      timestamp: Date.now(),
+      command,
+      power,
+      duration: 60, // 1 hour default
+      priority,
+      source: 'optimal_algorithm'
+    };
   }
 
   private validateInputs(inputs: WindStorageInputs): void {
