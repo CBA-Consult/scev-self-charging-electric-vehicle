@@ -23,6 +23,9 @@ The fuzzy control system consists of five main components:
 
 ### Hydraulic Electromagnetic Regenerative Dampers
 - **Energy Harvesting**: Converts suspension movement into electrical energy
+- **Advanced Research Tools**: Comprehensive analysis and optimization capabilities
+- **Multi-Objective Optimization**: Balances comfort, energy recovery, and stability
+- **Performance Comparison**: Detailed analysis vs traditional suspension systems
 - **Electromagnetic Induction**: Uses Faraday's law for power generation
 - **Hydraulic Damping**: Provides vehicle stability and comfort
 - **Adaptive Control**: Adjusts to road conditions and vehicle state
@@ -229,6 +232,13 @@ Efficiency and performance validation:
 
 ### Hydraulic Electromagnetic Regenerative Damper Research
 This module includes comprehensive research capabilities for analyzing hydraulic electromagnetic regenerative shock absorbers:
+
+#### New HRS Research Module
+The `HydraulicRegenerativeSuspensionResearch.ts` module provides advanced research tools:
+- **Parameter Optimization**: Multi-objective optimization for cylinder diameter, motor displacement, and accumulator settings
+- **Performance Analysis**: Detailed hydraulic system modeling and energy harvesting analysis
+- **Comparison Studies**: Comprehensive comparison with traditional suspension systems
+- **Research Reports**: Automated generation of detailed analysis reports
 
 - **Energy Production Analysis**: Evaluates power generation capabilities under various driving conditions
 - **Performance During Transit**: Analyzes continuous energy harvesting while the vehicle is in motion

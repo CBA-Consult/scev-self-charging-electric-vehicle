@@ -134,6 +134,20 @@ export {
   type DamperConstraints
 } from './HydraulicElectromagneticRegenerativeDamper';
 
+// Hydraulic Regenerative Suspension Research exports
+export { 
+  HydraulicRegenerativeSuspensionResearch,
+  createResearchConfiguration,
+  createDefaultHydraulicParameters,
+  createDefaultTraditionalParameters,
+  type HydraulicSystemParameters,
+  type TraditionalSuspensionParameters,
+  type ResearchConfiguration,
+  type PerformanceMetrics,
+  type ComparisonResults,
+  type OptimizationResult
+} from './HydraulicRegenerativeSuspensionResearch';
+
 // Hydraulic damper integration exports
 export {
   HydraulicDamperIntegration,
