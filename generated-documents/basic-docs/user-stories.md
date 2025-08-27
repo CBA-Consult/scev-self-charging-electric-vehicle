@@ -49,6 +49,11 @@ Each user story follows the format: "As a [user type], I want [functionality] so
     - **When:** I integrate all components into the vehicle design.
     - **Then:** The system functions reliably and efficiently, meeting all performance targets.
 
+     - **US014:** As a Quality Assurance Engineer, I want to simulate failure modes in the self-charging system (e.g., a damaged solar panel or a faulty regenerative braking sensor) so that I can verify the system's safety protocols and ensure it fails gracefully without compromising vehicle operation.
+         - **Given:** A test vehicle with the integrated self-charging system in a controlled environment.
+         - **When:** A failure is simulated in one of the energy harvesting components.
+         - **Then:** The system safely isolates the faulty component, logs an error, and alerts the driver without causing a critical failure in the vehicle's primary functions (like propulsion or braking).
+
 
 ## Epic 2: User Experience and Interface Design
 
@@ -63,6 +68,11 @@ Each user story follows the format: "As a [user type], I want [functionality] so
     - **Given:** A functional backend system and API.
     - **When:** The user interacts with the mobile app.
     - **Then:** The user can remotely access and control vehicle functions.
+
+     - **US015:** As a driver, I want the vehicle's navigation system to forecast my net energy balance for a planned route, considering factors like terrain, weather, and traffic, so that I can confidently undertake long journeys and know if I'll arrive with more or less charge than I started with.
+         - **Given:** The driver has entered a destination more than 50 miles away into the navigation system.
+         - **When:** The system calculates the route and retrieves the weather forecast.
+         - **Then:** The route summary displays an "Estimated Charge at Arrival," factoring in both projected energy consumption (from driving) and projected energy generation (from solar/regenerative systems).
 
 
 ## Epic 3: Market Strategy and Business Development

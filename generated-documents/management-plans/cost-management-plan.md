@@ -32,90 +32,83 @@ The project aims to develop and launch a commercially viable SCEV that utilizes 
 *   Achieving [Market Share Percentage] market penetration within [Number] years of launch.
 
 
-## 3. Cost Baseline
+# Cost Management Plan
 
-The cost baseline will be established using a Work Breakdown Structure (WBS) that meticulously details all project activities and their associated costs.  The WBS will be organized into the following major categories:
+**Project:** Self-Charging Electric Vehicle (SCEV)
+**Version:** 1.0
+**Prepared by:** SCEV Project Team
+**Date:** [Insert Date]
 
-**3.1 Research and Development (R&D):**
+## 1. Purpose
+Defines policies, processes, and tools for planning, estimating, budgeting, managing, and controlling costs throughout the SCEV project lifecycle. Supports delivery of strategic objectives, innovation, and financial transparency.
 
-*   **Photovoltaic Cell Integration:** This includes research into high-efficiency solar cells, their optimal placement on the vehicle, and integration with the vehicle's electrical system.  Cost estimates will incorporate material costs, specialized equipment, and personnel costs (research scientists, engineers).
-*   **Battery Management System (BMS):** Development of a sophisticated BMS to manage energy harvesting, storage, and distribution efficiently.  This includes software development, hardware components, and testing.
-*   **Artificial Intelligence (AI) Optimization:**  Development of AI algorithms to optimize energy consumption and maximize the efficiency of the self-charging system. This will involve data acquisition, algorithm development, and extensive testing.
-*   **Pendulum Energy Harvesting System (if applicable):** Research, design, and prototyping of a pendulum-based energy harvesting system for supplemental energy generation. This includes material costs, machining, and testing.  (Refer to the separate Pendulum Weight Optimization document for detailed cost estimations within this area)
+## 2. Cost Management Approach
+- **Estimation:** Bottom-up and parametric estimation using WBS, resource rates, and technology costs.
+- **Budgeting:** Aggregate estimates to establish an authorized baseline, aligned with investment plans.
+- **Control:** Monitor actuals vs. estimates, manage variances, forecast, and report regularly.
+- **Value Realization:** Track cost benefits against projected value and ROI.
 
+## 3. Cost Estimation
+- **Categories:** Personnel, technology, infrastructure, training, consulting, compliance, contingency.
+- **Methodology:** WBS decomposition, resource rates, benchmarking, vendor quotes, contingency for risk.
 
-**3.2 Manufacturing:**
+## 4. Cost Baseline
+- Establish baseline by phase (e.g., R&D, pilot, production).
+- Allocate costs by deliverable, domain, and timeline.
 
-*   **Tooling and Equipment:**  Acquisition or lease of specialized manufacturing equipment for the production of SCEV components.
-*   **Material Costs:**  Costs associated with procuring raw materials (sustainable materials where possible), components, and sub-assemblies.  This will include a detailed bill of materials (BOM).
-*   **Labor Costs:**  Direct and indirect labor costs associated with manufacturing, assembly, and quality control.
-*   **Facility Costs:**  Rent or mortgage payments, utilities, and maintenance for manufacturing facilities.
+## 5. Funding Requirements
+- **Sources:** Internal capital, grants, innovation funds, contingency reserves.
+- **Classification:** CapEx for assets, OpEx for operations.
 
+## 6. Cost Control & Monitoring
+- **Tracking:** Monthly actuals vs. baseline, variance analysis, value realization tracking.
+- **Governance:** Cost dashboard integration, monthly stakeholder reporting, audit trail, change control for >$10,000.
 
-**3.3 Marketing and Sales:**
+## 7. Unique Project Cost Considerations
+- **Sustainability:** ESG measurement, green tech premiums, reporting compliance.
+- **Innovation:** Premium rates for R&D, technology assessment, regulatory compliance.
+- **Risk:** Contingency management, trigger conditions, approval process.
 
-*   **Marketing Campaign:**  Development and execution of a comprehensive marketing campaign to build brand awareness, generate leads, and drive sales.  This includes advertising, public relations, social media marketing, and event participation.
-*   **Sales Force:**  Compensation, training, and support for the sales team.
-*   **Distribution and Logistics:**  Costs associated with transporting and delivering vehicles to customers and dealerships.
+## 8. Value Realization & ROI Tracking
+- **KPIs:** Cost variance, CPI, budget utilization, value realization rate, ROI by phase.
+- **Reporting:** Weekly team tracking, monthly council report, quarterly executive dashboard, annual cost-benefit analysis.
 
+## 9. Change Management & Cost Control
+- **Thresholds:** Changes >$100,000 require formal approval.
+- **Authority:**
+	- <$100,000: Project Manager
+	- $100,000–$500,000: PMO Director
+	- >$500,000: Executive Sponsor
 
-**3.4  Other Costs:**
+## 10. Roles & Responsibilities
+- **Project Manager:** Budget ownership, emergency approval up to $100,000, variance analysis, reporting.
+- **Finance Partner:** Cost tracking, analysis, integration.
+- **Domain Leads:** Estimation, optimization.
+- **PMO:** Compliance, reporting.
+- **Executive Sponsor:** Strategic approval.
+- **Procurement:** Vendor management.
 
-*   **Legal and Regulatory Compliance:** Costs related to meeting all relevant safety, environmental, and legal standards.
-*   **Administrative Costs:**  General administrative expenses, including salaries for non-technical staff, office supplies, and utilities.
-*   **Contingency:** A contingency budget (e.g., 10-15%) to account for unforeseen expenses and potential risks.
+## 11. Performance Measurement & KPIs
+- Cost variance, CPI, budget utilization, value realization, stakeholder value per dollar.
 
+## 12. Cost Reporting & Communication
+- Weekly, monthly, quarterly, annual reporting schedule.
+- Financial summary, value realization, risk assessment, optimization opportunities.
 
-## 4. Cost Estimation Techniques
+## 13. Risk Management & Contingency
+- Management reserve, trigger conditions, approval process, quarterly review.
 
-A combination of top-down and bottom-up estimation techniques will be utilized to develop the cost baseline.  Top-down estimates will be based on similar projects and market data. Bottom-up estimates will be derived from detailed WBS tasks and resource requirements.  Three-point estimation will be employed for higher-uncertainty tasks.
+## 14. Technology Cost Management
+- Cloud optimization, license management, open source, automation.
 
-## 5. Cost Control
+## 15. Continuous Improvement
+- Monthly reviews, benchmarking, process improvement, knowledge sharing.
 
-Cost control will be achieved through:
+## 16. Plan Review & Approval
+- Reviewed at milestones and major changes.
+- Requires approval from Project Sponsor, PMO Director, Finance, and Executive Sponsor.
 
-*   **Regular Monitoring:**  Tracking actual costs against the planned budget on a regular basis (weekly/monthly).
-*   **Earned Value Management (EVM):**  Utilizing EVM to measure project performance and identify potential cost overruns early.
-*   **Variance Analysis:**  Regular analysis of cost variances to identify the root causes and implement corrective actions.
-*   **Change Management:**  A formal change management process to control the impact of scope changes on the project budget.
-*   **Cost Reporting:**  Regular cost reports will be provided to stakeholders to keep them informed of the project's financial status.
+---
 
-
-## 6. Cost Performance Measurement
-
-Key performance indicators (KPIs) will include:
-
-*   **Cost Performance Index (CPI):**  Measures the efficiency of cost spending.
-*   **Schedule Performance Index (SPI):**  Measures the efficiency of schedule adherence (indirectly related to cost).
-*   **Cost Variance (CV):**  The difference between the planned and actual costs.
-*   **Budget at Completion (BAC):**  The total budget for the project.
-*   **Estimate at Completion (EAC):**  The expected total cost of the project, considering performance to date.
-
-
-## 7. Risk Management
-
-Potential cost risks include:
-
-*   **Technological Challenges:**  Unexpected delays or cost increases in R&D due to technological hurdles.
-*   **Material Shortages:**  Increased material costs due to supply chain disruptions.
-*   **Regulatory Changes:**  Additional costs associated with adapting to changes in safety or environmental regulations.
-*   **Market Volatility:**  Changes in market demand impacting sales projections and profitability.
-
-Mitigation strategies will be developed for each identified risk, including contingency planning and risk response strategies.
-
-
-## 8. Budget Allocation
-
-A detailed budget allocation will be developed based on the cost baseline.  This will be reviewed and updated regularly as the project progresses.  Initial allocations will prioritize critical path activities and high-risk areas.
-
-
-## 9. Reporting
-
+This Cost Management Plan is a living document, updated and revised as the project progresses and new information becomes available. Regular reviews will ensure the plan remains relevant and effective in controlling project costs.
 Regular cost reports will be generated and distributed to stakeholders, including the project manager, executive team, and investors. Reports will include:
-
-*   Actual vs. Planned Costs
-*   Cost Variances and Trends
-*   Potential Cost Risks
-*   Recommended Corrective Actions
-
-This Cost Management Plan will be a living document, updated and revised as the project progresses and new information becomes available.  Regular reviews will ensure the plan remains relevant and effective in controlling project costs.

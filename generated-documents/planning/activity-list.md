@@ -11,149 +11,154 @@
 
 ## Document Overview
 
-This Activity List details the tasks required to complete the Business Strategic Plan for a Self-Charging Electric Vehicle (SCEV).  It supports the project objectives by decomposing work packages into specific, measurable, assignable, and time-estimated activities.  This list is not directly tied to a formal Work Breakdown Structure (WBS) but can be easily integrated into one if needed.  Activities are identified using a combination of the project context and best practices for project planning.
+This Activity List is fully aligned with the Work Breakdown Structure (WBS) for the SCEV Business Strategic Plan. Each activity is mapped to a WBS code, phase, and deliverable, with clear effort estimates, dependencies, and required skills. The list includes detailed research and work for each technology advancement, as well as all major project phases.
 
 ## Activity Definitions
 
-### Project Phase: Vision, Mission, and Values Definition
+---
 
-#### Work Package: WBS-1.1 - Define Vision Statement
+## Detailed Activity List (WBS-Aligned)
 
-**Activity ID:** ACT-001
-**Activity Name:** Draft Vision Statement
-**Description:** Create a draft vision statement capturing the long-term aspirations for the SCEV company.  This should reflect the self-charging capability, sustainability, and market leadership.
-**Deliverable:** Draft Vision Statement document
-**Effort Estimate:** 8 hours
-**Skills Required:** Strategic planning, marketing, communication
-**Constraints:** None
-**Assumptions:** Access to relevant market research and competitive analysis.
+### Phase 1: Vision, Mission, and Values Definition (WBS-1.1)
+#### WBS-1.1.1 Develop Vision Statement
+* Draft Vision Statement (8h)
+* Refine Vision Statement (4h)
+* Stakeholder Review and Approval (4h)
 
+#### WBS-1.1.2 Develop Mission Statement
+* Draft Mission Statement (6h)
+* Refine Mission Statement (4h)
+* Stakeholder Review and Approval (4h)
 
-**Activity ID:** ACT-002
-**Activity Name:** Refine Vision Statement
-**Description:** Review and refine the draft vision statement based on feedback from stakeholders (e.g., executive team, potential investors).
-**Deliverable:** Finalized Vision Statement document
-**Effort Estimate:** 4 hours
-**Skills Required:** Stakeholder management, communication, editing
-**Constraints:** Feedback from stakeholders
-**Assumptions:** Timely stakeholder feedback
+#### WBS-1.1.3 Define Core Values
+* Brainstorm Core Values (4h)
+* Prioritize and Refine Core Values (8h)
+* Document Core Values and Alignment (4h)
 
+### Phase 2: Technology Roadmap (WBS-1.2)
+#### WBS-1.2.1 Research Self-Charging Technology Options
+* Research Photovoltaic Cell Advancements (16h)
+* Research Battery Management Systems (16h)
+* Research Regenerative Braking Technologies (16h)
+* Research AI for Energy Optimization (16h)
+* Compile Technology Research Report (8h)
 
-#### Work Package: WBS-1.2 - Define Mission Statement
+#### WBS-1.2.2 Develop Technical Specifications
+* Draft Technical Specifications for SCEV Self-Charging System (16h)
+* Review and Refine Specifications (8h)
+* Stakeholder Approval (4h)
 
-**Activity ID:** ACT-003
-**Activity Name:** Draft Mission Statement
-**Description:** Create a draft mission statement outlining the company's core purpose and objectives.  Focus on self-charging technology, sustainable practices, and customer value.
-**Deliverable:** Draft Mission Statement document
-**Effort Estimate:** 6 hours
-**Skills Required:** Strategic planning, marketing, communication
-**Constraints:** None
-**Assumptions:** Clear understanding of the company's vision.
+#### WBS-1.2.3 Technology Development Roadmap
+* Develop Technology Roadmap Document (24h)
+* Define R&D Milestones and Timelines (8h)
+* Identify Technical Risks and Mitigation Strategies (8h)
+* Secure IP Protection (8h)
 
+### Phase 3: Market Analysis and Strategy (WBS-1.3)
+#### WBS-1.3.1 Market Research
+* Conduct Market Research (32h)
+* Analyze Competitive Landscape (16h)
+* Identify Target Customer Segments (8h)
+* Compile Market Research Report (8h)
 
-**Activity ID:** ACT-004
-**Activity Name:** Refine Mission Statement
-**Description:** Review and refine the draft mission statement based on internal feedback and alignment with the vision statement.
-**Deliverable:** Finalized Mission Statement document
-**Effort Estimate:** 4 hours
-**Skills Required:** Stakeholder management, communication, editing
-**Constraints:** Internal review process
-**Assumptions:** Timely internal review.
+#### WBS-1.3.2 Develop Marketing and Sales Strategy
+* Develop Market Penetration Strategy (16h)
+* Define Go-to-Market Plan (16h)
+* Develop Branding and Positioning Strategy (16h)
+* Stakeholder Review and Approval (8h)
 
+### Phase 4: Financial Planning and Funding (WBS-1.4)
+#### WBS-1.4.1 Financial Model Development
+* Develop Financial Model (40h)
+* Review and Refine Financial Projections (16h)
+* Stakeholder Approval (8h)
 
-#### Work Package: WBS-1.3 - Define Core Values
+#### WBS-1.4.2 Funding and Partnerships
+* Identify Funding Sources (16h)
+* Prepare Investor Pitch Materials (16h)
+* Secure Funding/Partnerships (24h)
 
-**Activity ID:** ACT-005
-**Activity Name:** Brainstorm Core Values
-**Description:** Conduct a brainstorming session to identify potential core values that align with the company's vision and mission.
-**Deliverable:** List of potential core values
-**Effort Estimate:** 4 hours
-**Skills Required:** Team facilitation, brainstorming, strategic thinking
-**Constraints:** Availability of key personnel
-**Assumptions:** Active participation from key stakeholders.
+#### WBS-1.4.3 Budgeting and KPIs
+* Establish Project Budget (16h)
+* Develop KPIs for Financial Performance (8h)
 
+### Phase 5: Operational Plan (WBS-1.5)
+#### WBS-1.5.1 Manufacturing and Distribution
+* Develop Manufacturing Plan (24h)
+* Establish Supply Chain Relationships (16h)
+* Develop Distribution Strategy (16h)
 
-**Activity ID:** ACT-006
-**Activity Name:** Prioritize and Refine Core Values
-**Description:** Prioritize the brainstormed core values and refine their descriptions to ensure clarity and consistency.
-**Deliverable:** Final list of prioritized core values with descriptions
-**Effort Estimate:** 8 hours
-**Skills Required:** Strategic planning, communication, writing
-**Constraints:** None
-**Assumptions:** Consensus among stakeholders on the final list.
+#### WBS-1.5.2 Quality Control and Customer Service
+* Develop Quality Control Processes (16h)
+* Develop Customer Service Strategy (16h)
 
+#### WBS-1.5.3 Scaling Production
+* Plan for Scaling Production (16h)
 
-### Project Phase: Strategic Plan Development
+### Phase 6: Risk Management Plan (WBS-1.6)
+#### WBS-1.6.1 Risk Identification and Assessment
+* Identify Project Risks (16h)
+* Assess Risks and Impact (8h)
 
-#### Work Package: WBS-2.1 - Technology Development Plan
+#### WBS-1.6.2 Mitigation and Contingency Planning
+* Develop Mitigation Strategies (16h)
+* Develop Contingency Plan (8h)
+* Monitor and Review Risk Plan (8h)
 
-**Activity ID:** ACT-007
-**Activity Name:** Research Existing Technologies
-**Description:** Conduct thorough research on existing photovoltaic cell, battery management system, and AI technologies relevant to self-charging vehicles.
-**Deliverable:** Comprehensive technology research report
-**Effort Estimate:** 40 hours
-**Skills Required:** Technical research, engineering expertise
-**Constraints:** Availability of relevant information
-**Assumptions:** Access to scientific databases and industry publications.
+### Phase 7: Legal and Regulatory Compliance (WBS-1.7)
+#### WBS-1.7.1 Legal Research and Compliance Planning
+* Research Legal/Regulatory Requirements (16h)
+* Develop Compliance Plan (8h)
+* Secure Permits and Licenses (8h)
 
+### Phase 8: Continuous Improvement (WBS-1.8)
+#### WBS-1.8.1 Feedback and Improvement Process
+* Establish Customer Feedback System (8h)
+* Analyze Feedback and Market Trends (8h)
+* Develop Process for Continuous Improvement (8h)
+* Plan for Updates/Upgrades (8h)
 
-**Activity ID:** ACT-008
-**Activity Name:** Develop Technology Roadmap
-**Description:** Based on the research, create a detailed technology roadmap outlining the key milestones and timelines for developing the SCEV's self-charging technology.
-**Deliverable:** Technology Roadmap document
-**Effort Estimate:** 24 hours
-**Skills Required:** Project planning, engineering expertise
-**Constraints:** None
-**Assumptions:** Realistic estimations of development time and resource requirements.
+### Phase 9: Final Business Plan Documentation (WBS-1.9)
+#### WBS-1.9.1 Compile and Finalize Business Plan
+* Compile All Research, Analysis, and Plans (24h)
+* Review and Finalize Document (16h)
+* Stakeholder Approval and Sign-off (8h)
 
-
-#### Work Package: WBS-2.2 - Market Analysis and Penetration Strategy
-
-**Activity ID:** ACT-009
-**Activity Name:** Conduct Market Research
-**Description:** Conduct market research to identify target markets, competitive landscape, and potential market size for self-charging vehicles.
-**Deliverable:** Market research report
-**Effort Estimate:** 32 hours
-**Skills Required:** Market research, data analysis
-**Constraints:** Availability of market data
-**Assumptions:** Access to reliable market research data.
-
-
-**Activity ID:** ACT-010
-**Activity Name:** Develop Market Penetration Strategy
-**Description:** Based on the market research, develop a strategy for penetrating the identified target markets, considering pricing, distribution, and marketing strategies.
-**Deliverable:** Market penetration strategy document
-**Effort Estimate:** 16 hours
-**Skills Required:** Marketing strategy, sales strategy
-**Constraints:** None
-**Assumptions:** Clear understanding of target markets and competitive landscape.
-
-
-[Continue adding activities for remaining work packages (WBS-2.3 - Financial Plan, WBS-2.4 -  Sustainability Plan, WBS-2.5 - Brand Positioning Strategy, WBS-2.6 - Customer Engagement Plan, WBS-2.7 - Scalability and Adaptability Plan), following the same format as above.  Each work package should be broken down into several specific activities.]
+---
 
 
 ## Activity Summary
 
-### Activity Inventory
+### Activity Inventory (Summary Table)
 
-(This table would be populated with all activities from the "Activity Definitions" section.  It’s too extensive to include here fully.)
+| WBS Code   | Activity Name                                 | Phase                       | Effort Est. | Skills Required                |
+|------------|-----------------------------------------------|-----------------------------|-------------|---------------------------------|
+| 1.1.1      | Draft Vision Statement                        | Vision/Mission/Values       | 8h          | Strategic planning, marketing   |
+| 1.2.1      | Research Photovoltaic Cell Advancements       | Technology Roadmap          | 16h         | Technical research, engineering |
+| 1.2.1      | Research Battery Management Systems           | Technology Roadmap          | 16h         | Technical research, engineering |
+| 1.2.1      | Research Regenerative Braking Technologies    | Technology Roadmap          | 16h         | Technical research, engineering |
+| 1.2.1      | Research AI for Energy Optimization           | Technology Roadmap          | 16h         | Technical research, engineering |
+| 1.3.1      | Conduct Market Research                       | Market Analysis             | 32h         | Market research, data analysis  |
+| 1.4.1      | Develop Financial Model                       | Financial Planning          | 40h         | Financial modeling, analysis    |
+| 1.5.1      | Develop Manufacturing Plan                    | Operational Plan            | 24h         | Operations, supply chain        |
+| 1.6.1      | Identify Project Risks                        | Risk Management             | 16h         | Risk analysis                   |
+| 1.7.1      | Research Legal/Regulatory Requirements        | Legal/Regulatory            | 16h         | Legal research, compliance      |
+| 1.8.1      | Establish Customer Feedback System            | Continuous Improvement      | 8h          | Customer engagement, analytics  |
+| 1.9.1      | Compile All Research, Analysis, and Plans     | Final Business Plan         | 24h         | Documentation, project mgmt     |
+| ...        | ...                                           | ...                         | ...         | ...                             |
 
-| Activity ID | Activity Name                     | Work Package | Phase                     | Effort Est. | Skills Required             |
-|-------------|------------------------------------|--------------|--------------------------|-------------|-----------------------------|
-| ACT-001     | Draft Vision Statement             | WBS-1.1      | Vision, Mission, Values | 8 hours     | Strategic planning, marketing |
-| ACT-002     | Refine Vision Statement            | WBS-1.1      | Vision, Mission, Values | 4 hours     | Stakeholder management      |
-| ...         | ...                                | ...          | ...                       | ...         | ...                         |
-
+---
 
 ### Activity Categories
 
-* **Strategic Planning Activities:**  (Count will depend on the detailed breakdown of the strategic plan)  Activities related to defining the vision, mission, core values, and developing the overall strategic plan.
-* **Market Research Activities:** (Count will depend on the depth of market research) Activities related to conducting market research, analyzing data, and developing market penetration strategies.
-* **Financial Planning Activities:** (Count will depend on the complexity of the financial model) Activities related to developing financial projections, securing funding, and managing financial resources.
-* **Technology Development Activities:** (Count will depend on the complexity of the self-charging technology) Activities related to researching, developing, and testing the self-charging technology.
-* **Sustainability Planning Activities:** Activities related to developing strategies to minimize environmental impact and promote sustainable practices.
-* **Marketing and Branding Activities:** Activities related to developing branding strategies, market positioning, and marketing campaigns.
-* **Documentation Activities:** Activities related to creating and updating project documents (reports, presentations, etc.).
+* **Strategic Planning Activities:** Vision, mission, values, and strategic plan development.
+* **Technology Research & Development:** Research and advancement of photovoltaic, battery, regenerative braking, and AI technologies.
+* **Market Research & Strategy:** Market analysis, competitive landscape, and go-to-market planning.
+* **Financial Planning & Funding:** Financial modeling, budgeting, and securing funding.
+* **Operational Planning:** Manufacturing, supply chain, quality control, and scaling.
+* **Risk Management:** Identification, assessment, mitigation, and contingency planning.
+* **Legal & Regulatory Compliance:** Research, planning, and securing permits.
+* **Continuous Improvement:** Feedback systems, process improvement, and upgrades.
+* **Documentation:** Compilation and finalization of the business plan.
 
-
-This Activity List provides a foundational framework.  The specific activities and their details will need further refinement based on the project's evolving needs and the level of detail required for successful execution.  The effort estimates are also preliminary and should be reviewed and updated as the project progresses and more information becomes available.
+Effort estimates are preliminary and should be reviewed as the project progresses. This detailed activity list provides a comprehensive, WBS-aligned framework for successful execution of the SCEV Business Strategic Plan.

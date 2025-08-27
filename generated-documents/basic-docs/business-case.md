@@ -9,7 +9,7 @@
 
 # Business Case: Self-Charging Electric Vehicle (SCEV) Strategic Plan
 
-**Menno Drescher | June 19, 2024**
+**Menno Drescher | August 25, 2025**
 
 **Vision:** Empowering the future of mobility with self-charging electric vehicles that ensure a fully charged arrival, combining cutting-edge technology with sustainable practices to redefine the driving experience.
 
@@ -80,3 +80,52 @@ This project directly aligns with our core strategic goals of innovation, sustai
 ## 9. Recommendation
 
 Based on the compelling financial projections, strong strategic alignment, and robust risk mitigation plans, we strongly recommend proceeding with the SCEV strategic plan. The potential for market disruption, significant revenue generation, and positive environmental impact makes this a high-priority initiative with substantial long-term value for the organization.
+
+---
+
+## 10. Technology Readiness Level (TRL)
+
+The In Wheel Frictionless Maglev Technology is currently at TRL 3 (experimental proof of concept). Initial lab tests have validated the core principles of magnetic levitation and energy harvesting. The next steps include building a functional prototype (TRL 4-5), followed by pilot testing in real-world conditions (TRL 6-7). Advancement to higher TRLs will require additional R&D, iterative prototyping, and validation.
+
+## 11. Target Market Specificity
+
+Primary target segments include:
+- Premium electric vehicle manufacturers seeking differentiation and advanced energy solutions.
+- High-performance automotive segments focused on efficiency and innovation.
+- Fleet operators (urban delivery, logistics) prioritizing energy autonomy and operational cost reduction.
+
+The initial go-to-market strategy will focus on premium EV manufacturers, leveraging their early adoption potential and brand influence. Subsequent phases will expand to fleet operators and broader automotive markets.
+
+## 12. Competitive Analysis
+
+Key competitors in the EV market include Tesla, Rivian, Lucid Motors, and traditional automakers like BMW and Mercedes-Benz. Most competitors are investing in battery technology and incremental improvements in energy efficiency. Few are pursuing integrated self-charging or maglev-based solutions, presenting a unique window of opportunity for SCEV. Continuous monitoring of competitor R&D and patent filings will inform strategic positioning and product differentiation.
+
+## 13. Cost Assumptions
+
+**R&D Costs ($30M):**
+- Personnel: $12M
+- Lab equipment and materials: $8M
+- Prototype development: $6M
+- Testing and validation: $4M
+
+**Tooling & Setup ($20M):**
+- Production tooling: $10M
+- Facility setup: $6M
+- Supplier onboarding: $4M
+
+**Recurring Costs ($10M/year):**
+- Marketing: $3M
+- Sales: $2M
+- Operations: $5M
+
+These estimates are based on industry benchmarks and internal projections. Detailed breakdowns are available in the financial appendix.
+
+## 14. Patent & IP Strategy
+
+The project will pursue a robust intellectual property strategy, including:
+- Filing patents for core maglev energy harvesting technology, system integration, and control algorithms.
+- Securing design patents for unique vehicle features and energy management systems.
+- Monitoring competitor patent activity and defending IP through legal counsel as needed.
+- Establishing partnerships with technology providers to access complementary IP and accelerate innovation.
+
+The IP strategy will be reviewed quarterly to ensure ongoing protection and competitive advantage.
