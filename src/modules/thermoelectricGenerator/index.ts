@@ -10,23 +10,18 @@ export { ThermoelectricGenerator } from './ThermoelectricGenerator';
 export { TEGIntegration } from './TEGIntegration';
 export { TEGEnvironmentalMonitor } from './TEGEnvironmentalMonitor';
 export { TEGThermalManager } from './TEGThermalManager';
+export { 
+  MaterialEvaluator,
+  createAutomotiveMaterialEvaluator,
+  createHighPerformanceMaterialEvaluator,
+  createCostOptimizedMaterialEvaluator
+} from './MaterialEvaluator';
 
 export * from './types';
 
- * Thermoelectric Generator (TEG) Module for EV Braking Systems
- * 
- * This module implements thermoelectric generators that capture waste heat
- * from braking systems and convert it to electrical energy, integrating
- * with regenerative braking systems for enhanced energy recovery.
- * 
- * @author TEG Development Team
- * @version 1.0.0
- */
-
-export * from './ThermoelectricGenerator';
+// Additional exports for braking integration and thermal management
 export * from './TEGBrakingIntegration';
 export * from './ThermalManagement';
-export * from './types';
 
 // Re-export commonly used types and interfaces
 export type {
