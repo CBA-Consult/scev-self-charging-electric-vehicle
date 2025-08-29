@@ -79,15 +79,16 @@ Empower a sustainable future by creating electric vehicles equipped with self-ch
 ---
 
 ## Vehicle Power Sources & Estimated Output
-| Power Source         | Estimated Output (kWh) | Notes                                 |
-|---------------------|------------------------|---------------------------------------|
-| Solar Photovoltaic  | 1-5                    | Depends on panel area & sunlight      |
-| Regenerative Braking| 0.5-2                  | Varies with driving conditions        |
-| Kinetic Harvesting  | 0.1-0.5                | Pendulum, vibration, wheel motion     |
-| Grid Charging (V2G) | 10-100                 | Bi-directional, home/grid integration |
-| Battery Storage     | 20-100                 | Advanced Li-ion, solid-state, etc.    |
+| Power Source         | Estimated Output (kWh) | Notes & Project Reference                        |
+|---------------------|------------------------|--------------------------------------------------|
+| Solar Photovoltaic  | 2-7                    | Solari: Integrated roof/body PV, real-world tested|
+| Regenerative Braking| 0.5-2                  | Kinetix: KERS optimization, driving conditions    |
+| Maglev Induction    | 1-3                    | Maglev: Next-gen induction, pilot phase           |
+| Kinetic Harvesting  | 0.2-0.7                | Dynamo: Pendulum/vibration, TPMS, validated       |
+| Grid Charging (V2G) | 10-100                 | Nexus: Bi-directional, home/grid integration      |
+| Wireless Charging   | 2-10                   | Flux: Wireless charging, pilot phase              |
+| Battery Storage     | 30-120                  | Guardian: Advanced BMS, AI-optimized, solid-state |
 
----
 
 ## Business Strategy, Sustainability & Continuous Improvement
 - Focus on scalable, sustainable production and market expansion.

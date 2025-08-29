@@ -131,11 +131,12 @@ A comprehensive stakeholder management and communication plan will be developed 
 The SCEV Program is an umbrella program that will coordinate and integrate the following key projects. Each project will have its own detailed charter.
 
 1.  **Project Solari:** Photovoltaic Energy Generation - Responsible for the research, selection, and seamless integration of the most advanced solar panel technology into the vehicle's body.
-2.  **Project Kinetix:** Regenerative and Suspension Energy Harvesting - A consolidated effort to maximize kinetic energy recovery from braking and to develop systems that capture energy from suspension movement.
-3.  **Project Maglev:** In-Wheel Electromagnetic Induction - Focused on developing frictionless in-wheel maglev and electromagnetic induction systems to generate energy from wheel rotation and vehicle movement.
-4.  **Project Synapse:** Intelligent Power Management System (IPMS) - Tasked with the design and implementation of the AI-driven algorithms for dynamic energy allocation, real-time data visualization, and bidirectional grid communication.
-5.  **Project Bedrock:** Scalable Vehicle Platform - Responsible for the ground-up design and engineering of the skateboard chassis, ensuring it is lightweight, safe, and optimized for all energy-generating and storage components.
-6.  **Project Interface:** Connected User Experience - Will develop the in-car and mobile applications that allow drivers to interact with and understand the vehicle's unique energy capabilities.
+2.  **Project Dynamo:** Rotational Inductive Energy Production - Researches and develops novel methods for generating and capturing energy from rotational and magnetic forces within the vehicle system, supporting advanced self-charging capabilities.
+3.  **Project Kinetix:** Kinetic Energy Recovery System (KERS) Improvements - Focuses on optimizing in-wheel motor regeneration and overall energy recovery efficiency, advancing KERS technology for electric vehicles.
+4.  **Project Maglev:** In-Wheel Electromagnetic Induction - Focused on developing frictionless in-wheel maglev and electromagnetic induction systems to generate energy from wheel rotation and vehicle movement.
+5.  **Project Synapse:** Intelligent Power Management System (IPMS) - Tasked with the design and implementation of the AI-driven algorithms for dynamic energy allocation, real-time data visualization, and bidirectional grid communication.
+6.  **Project Bedrock:** Scalable Vehicle Platform - Responsible for the ground-up design and engineering of the skateboard chassis, ensuring it is lightweight, safe, and optimized for all energy-generating and storage components.
+7.  **Project Interface:** Connected User Experience - Will develop the in-car and mobile applications that allow drivers to interact with and understand the vehicle's unique energy capabilities.
 
 ---
 

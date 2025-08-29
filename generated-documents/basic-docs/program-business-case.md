@@ -13,7 +13,7 @@
 
 This business case recommends the formal approval and funding of the **SCEV Customer Experience (CX) Program**. This is not a single project, but a strategic program that will govern a portfolio of interconnected projects to develop and commercialize a revolutionary electric vehicle and its supporting ownership ecosystem. The program's mission is to eliminate the core friction points of EV ownership—range anxiety and charging dependency—by delivering a superior, seamless customer experience.
 
-This will be achieved by orchestrating several key projects: `Genesis` (the core vehicle), `Autonomy` (the self-charging technology), `Connect` (the digital interface), and `Journey` (the ownership lifecycle). These are in turn supported by deep-tech R&D projects (`Bedrock`, `Solari`, `Kinetix`, etc.). By managing these efforts at a program level, we can ensure strategic alignment, manage cross-project dependencies, and guarantee that all technological innovation serves the primary goal of customer delight. We project a positive program ROI within 8 years of market entry, capturing a significant share of the premium EV market by establishing our brand as the definitive leader in customer-centric transportation.
+This will be achieved by orchestrating several key programs: `Program Genesis` (the core vehicle), `Autonomy` (the self-charging technology), `Connect` (the digital interface), and `Program Journey` (the ownership lifecycle). These are in turn supported by deep-tech R&D projects (`Bedrock`, `Solari`, `Kinetix`, etc.). By managing these efforts at a program level, we can ensure strategic alignment, manage cross-project dependencies, and guarantee that all technological innovation serves the primary goal of customer delight. We project a positive program ROI within 8 years of market entry, capturing a significant share of the premium EV market by establishing our brand as the definitive leader in customer-centric transportation.
 
 ### **2. Problem Definition & Market Opportunity**
 
@@ -23,13 +23,14 @@ The widespread adoption of electric vehicles is fundamentally constrained by con
 
 The solution is a program-driven development of an integrated customer experience, delivered through a portfolio of focused projects:
 
-1.  **Project Genesis (The Core Vehicle):** Will deliver the foundational, high-quality vehicle platform, engineered for safety and scalability via its sub-project, **Project Bedrock**.
+1.  **Program Genesis (The Core Vehicle):** Will deliver the foundational, high-quality vehicle platform, engineered for safety and scalability.
+2.  **Project Bedrock (Scalable Chassis Integration):** Will develop the modular, scalable "skateboard" chassis that enables compatibility with all energy systems and supports rapid prototyping and manufacturing across the SCEV portfolio.
 2.  **Project Autonomy (The Energy Experience):** Will create the "arrive fully charged" experience by integrating the outputs of its R&D sub-projects: **Project Solari** (solar), **Project Kinetix** (kinetic capture), **Project Guardian** (advanced BMS), and **Project Synapse** (AI power management).
 3.  **Project Connect (The Digital Experience):** Will develop the seamless digital interface, including the in-car OS and mobile application, that makes managing the vehicle and its energy intuitive and simple.
-4.  **Project Journey (The Ownership Experience):** Will design the entire customer lifecycle, from purchase and delivery to service and support, ensuring a world-class experience at every touchpoint.
+4.  **Program Journey (The Ownership Experience):** Will design the entire customer lifecycle, from purchase and delivery to service and support, ensuring a world-class experience at every touchpoint.
 
 This program structure ensures that the outputs of the highly technical R&D projects are perfectly integrated to serve the strategic, customer-facing goals.
-
+Project Bedrock is a critical enabler for the Genesis vehicle and all energy integration projects, providing the physical platform for innovation and scalability.
 ### **4. Strategic Alignment**
 
 This program is in direct alignment with our core organizational values and strategic goals:
@@ -43,7 +44,7 @@ The total program investment is allocated across its constituent projects and ma
 
 **Estimated Program Costs:**
 *   **Phase 1: R&D and Prototyping (Years 1-3):** $55 million (Primarily funding Projects `Bedrock`, `Solari`, `Kinetix`, `Guardian`, `Synapse`)
-*   **Phase 2: Pilot Production and Market Entry (Years 4-7):** $160 million (Funding shifts to `Genesis`, `Connect`, and `Journey`)
+*   **Phase 2: Pilot Production and Market Entry (Years 4-7):** $160 million (Funding shifts to `Program Genesis`, `Connect`, and `Program Journey`)
 *   **Phase 3: Mass Production and Expansion (Years 8-11):** $520 million
 *   **Total Estimated Program Investment:** $735 million over 11 years
 
@@ -68,21 +69,27 @@ In addition to standard technical and market risks, this program structure allow
 ### **7. Program Roadmap & Phased Execution**
 
 *   **Phase 1 (Years 1-3):** Charter and execute the core R&D projects (`Bedrock`, `Solari`, etc.). The program's focus is on technology incubation and integration into a functional prototype.
-*   **Phase 2 (Years 4-7):** Shift focus to the experience-level projects (`Genesis`, `Connect`, `Journey`). The program will manage the launch of the MVP and the validation of the complete customer experience in niche markets.
+*   **Phase 2 (Years 4-7):** Shift focus to the experience-level programs (`Program Genesis`, `Connect`, `Program Journey`). The program will manage the launch of the MVP and the validation of the complete customer experience in niche markets.
 *   **Phase 3 (Years 8-11):** The program will oversee the scaling of production, the global expansion of the ecosystem, and the achievement of profitability.
 
 ### **8. Success Metrics & KPIs**
 
-Success will be measured at both the program and project levels to ensure strategic alignment.
 
-| Level | Category | KPI | Target |
-| :--- | :--- | :--- | :--- |
-| **Program**| Customer | Net Promoter Score (NPS) | Achieve an NPS of 72 or higher. |
-| **Program**| Market | Market Share | Achieve 16% share in target niche segments. |
-| **Program**| Financial | Return on Investment (ROI) | Achieve positive ROI within 8 years. |
-| **Project** | Performance | Energy Recovery Efficiency (`Kinetix`) | Achieve >96% regenerative braking efficiency. |
-| **Project** | Sustainability| Carbon Footprint (`Solari`) | Reduce carbon footprint by 27% vs. grid-charged EVs. |
-| **Project** | Operations | Time-to-Market (`Genesis`) | Launch commercially within 7 years from program start. |
+Success will be measured at both the program and project levels to ensure strategic alignment and technical achievement.
+
+| Level      | Category      | KPI / Project Result                                   | Target / Outcome |
+|:-----------|:-------------|:------------------------------------------------------|:-----------------|
+| **Program**| Customer      | Net Promoter Score (NPS)                              | Achieve NPS ≥ 72 |
+| **Program**| Market        | Market Share                                          | ≥16% in target segments |
+| **Program**| Financial     | Return on Investment (ROI)                            | Positive ROI within 8 years |
+| **Project**| Performance   | Energy Recovery Efficiency (`Kinetix`)                | >96% regenerative braking efficiency |
+| **Project**| Sustainability| Carbon Footprint Reduction (`Solari`)                 | ≥27% reduction vs. grid-charged EVs |
+| **Project**| Innovation    | Rotational/Maglev Energy Capture (`Dynamo`)           | ≥18% of total energy from rotational/maglev sources |
+| **Project**| Technology    | In-Wheel Induction Output (`Maglev`)                  | ≥12% of total energy from maglev induction |
+| **Project**| Intelligence  | AI Power Management Optimization (`Synapse`)          | ≥15% improvement in energy allocation efficiency |
+| **Project**| Platform      | Scalable Chassis Integration (`Bedrock`)              | 100% compatibility with all energy systems |
+| **Project**| Experience    | User Interface Engagement (`Interface`)               | ≥85% user satisfaction with energy management UI |
+| **Program**| Operations    | Time-to-Market (`Program Genesis`)                    | Commercial launch ≤ 7 years from start |
 
 ### **9. Recommendation**
 

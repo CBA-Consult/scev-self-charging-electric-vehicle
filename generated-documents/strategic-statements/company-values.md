@@ -14,6 +14,10 @@ Business Strategic Plan for a Self Charging Electric Vehicle
 
 At Self-Charging Electric Vehicles (SCEV), our core values aren't merely aspirational statements; they are the foundational principles guiding our decisions, actions, and culture.  These principles define how we collaborate, innovate, and deliver unparalleled value to our customers and stakeholders, driving our mission to empower the future of mobility.
 
+---
+### **Inclusivity, Skills, and Competency Focus**
+We are committed to building a diverse and inclusive workforce, valuing a broad range of skills, backgrounds, and competencies. Our recruitment, onboarding, and development processes are designed to ensure equal opportunity and foster a culture where every team member can thrive and contribute their unique strengths.
+
 
 ## 2. The Values We Live By
 
@@ -35,6 +39,8 @@ At Self-Charging Electric Vehicles (SCEV), our core values aren't merely aspirat
     *   We prioritize renewable energy sources in our manufacturing processes and vehicle designs (e.g., solar, wind, kinetic energy integration).
     *   Our supply chain adheres to strict eco-friendly standards, minimizing waste and maximizing recycled materials.
     *   We actively reduce our carbon footprint through continuous improvement initiatives and transparent reporting of our environmental impact.
+    *   We measure and report sustainability performance using clear metrics (e.g., energy usage, emissions, recycled content, waste reduction) and publish annual sustainability reports.
+    *   We set ambitious sustainability goals and regularly review progress, adjusting strategies to maximize positive impact.
 
 
 ### **Value 3:  Customer-Driven Excellence**
@@ -66,6 +72,10 @@ At Self-Charging Electric Vehicles (SCEV), our core values aren't merely aspirat
     *   We proactively monitor technological advancements, integrating new innovations into our products and processes as they emerge.
     *   We invest in continuous learning and development for our employees, fostering a growth mindset that embraces change as an opportunity.
 
+---
+### **Continuous Improvement**
+We embrace a culture of continuous improvement, regularly reviewing our processes, products, and services to identify opportunities for enhancement. Feedback is actively solicited from employees, customers, and stakeholders, and lessons learned are systematically integrated into our operations. We celebrate innovation and encourage experimentation, learning from both successes and failures.
+
 
 ## 3. Living Our Values
 
@@ -80,6 +90,10 @@ When making decisions, teams prioritize these values, ensuring that choices alig
 ### **Performance & Recognition**
 
 Performance evaluations and recognition programs directly reflect these values.  Employees are rewarded for demonstrating unwavering safety, sustainable innovation, customer-centric approaches, strong integrity, and adaptive leadership.
+
+---
+### **Stakeholder Engagement**
+We recognize that our success depends on strong, proactive engagement with all stakeholders. Our approach is guided by the principles outlined in our [Stakeholder Engagement Plan](../stakeholder-management/stakeholder-engagement-plan.md): transparency, inclusivity, responsiveness, and value creation. We actively seek input from diverse stakeholder groups, tailor communication strategies, and measure engagement success through participation rates, feedback scores, and collaborative outcomes. Continuous improvement in stakeholder engagement is achieved through regular feedback, monitoring, and adaptation of our strategies.
 
 
 ## 4. Our Commitment
