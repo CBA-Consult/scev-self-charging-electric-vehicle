@@ -1,5 +1,3 @@
----
-
 ## Detailed Requirements Breakdown
 
 The following requirements are derived from project documentation, user stories, technical design, and acceptance criteria. Each is broken down into incremental steps to support activity list creation:

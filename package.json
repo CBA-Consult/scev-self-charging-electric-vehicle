@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/CBA-Consult/scev-self-charging-electric-vehicle#readme",
   "dependencies": {
-    "adpa-enterprise-framework-automation": "^3.2.5"
+    "adpa-enterprise-framework-automation": "^3.2.7"
   }
 }

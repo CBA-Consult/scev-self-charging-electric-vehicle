@@ -46,6 +46,22 @@
 | Fleet Operators | Potential Customer | Various | Key Customer Segment | TBD | 7 | 9 | Initial Contact | Long-term Contract Negotiation |
 | Investors/Funding Sources | Financial Backer | Various | Project Sponsor | TBD | 9 | 9 | Committed | Continuous updates and transparency |
 | Government Regulatory Bodies | Regulator | Federal/State Agencies | Stakeholder | TBD | 6 | 6 | Initial notification | Ongoing Consultation and Compliance |
+| Operations Manager | Operations Manager | Various | Fleet Operations Decision Maker | TBD | 7 | 8 | Initial Contact | Active Engagement (Requirements Workshops) |
+| Field Technician | Field Technician | Various | Service Delivery | TBD | 4 | 8 | Awareness | Training and Feedback Sessions |
+| Executive Stakeholder | Executive | Various | Strategic Oversight | TBD | 8 | 8 | Initial Contact | Strategic Review Meetings |
+| Data Analyst | Analyst | Various | Data Analysis & Reporting | TBD | 5 | 7 | Awareness | Data Sharing & Collaboration |
+| Customer/User | Individual Consumer | Various | End User | TBD | 3 | 9 | Awareness | User Experience Feedback |
+| IT Administrator | IT Administrator | Various | System Security & Compliance | TBD | 6 | 7 | Initial Contact | Technical Workshops |
+| Trainer/Support Specialist | Trainer/Support | Various | User Enablement | TBD | 4 | 7 | Awareness | Training Program Development |
+| Fleet Manager | Fleet Manager | Various | Fleet Management | TBD | 7 | 8 | Initial Contact | Fleet Analytics Collaboration |
+| Sustainability Officer | Sustainability Officer | Various | ESG/Compliance | TBD | 6 | 8 | Initial Contact | Sustainability Reporting Collaboration |
+| Technology Enthusiast Buyer | Tech Enthusiast | Various | Early Adopter | TBD | 3 | 8 | Awareness | Beta Testing & Feature Feedback |
+| Commercial Buyer | Commercial Buyer | Various | Business Procurement | TBD | 7 | 8 | Initial Contact | Procurement Process Optimization |
+| Government/Institutional Buyer | Government Buyer | Various | Public Sector Procurement | TBD | 8 | 7 | Initial Contact | Compliance & Transparency Workshops |
+| Sales Manager | Sales Manager | Various | Sales Operations | TBD | 6 | 7 | Awareness | CRM Integration Feedback |
+| Business Consultant | Consultant | Various | Client Advisory | TBD | 5 | 7 | Awareness | Consulting Needs Assessment |
+| Service Engineer | Service Engineer | Various | Technical Service Delivery | TBD | 5 | 8 | Awareness | Service Process Improvement |
+| Management Function | Management | Various | Lease Budget Oversight | TBD | 7 | 7 | Initial Contact | Budget Review Meetings |
 
 
 ## 3. Organizational Stakeholders (Requires Organizational Input)
